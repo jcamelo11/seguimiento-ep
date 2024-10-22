@@ -69,6 +69,15 @@ class AprendizResource extends Resource
                                         TextInput::make('ficha')
                                             ->label('Ficha')
                                             ->required(),
+                                        Select::make('nivel_formacion')
+                                        ->label('Nivel de Formacion')
+                                        ->options([
+                                            'Tecnologo' => 'Tecnologo',
+                                            'Tecnico' => 'Tecnico',
+                                            'Auxilar' => 'Auxilar',
+                                            'Operativo' => 'Operativo',
+                                        ])
+                                        ->required(),
                                         TextInput::make('nivel_formacion')
                                             ->label('Nivel de Formación')
                                             ->required(),
@@ -151,7 +160,7 @@ class AprendizResource extends Resource
                     ->label('Apellidos'),
                 TextColumn::make('programaFormacion.nombre_programa')
                     ->label('Programa de Formación'),
-                    BadgeColumn::make('estado') 
+                BadgeColumn::make('estado') 
                     ->label('Estado')
                     ->colors([
                         'primary',
@@ -189,6 +198,7 @@ class AprendizResource extends Resource
     {
         return [
             RelationManagers\EtapaProductivaRelationManager::class,
+            RelationManagers\InformesSeguimientoRelationManager::class,
         ];
     }
 

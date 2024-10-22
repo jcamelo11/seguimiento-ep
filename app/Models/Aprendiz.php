@@ -42,20 +42,21 @@ class Aprendiz extends Model
         return $this->hasOne(EtapaProductiva::class, 'aprendiz_id'); // Especificar la clave foránea
     }
 
-    public function instructorSeguimiento()
+    public function instructorSeguimiento(): BelongsTo
     {
         return $this->belongsTo(InstructorSeguimiento::class, 'instructor_seguimiento_id');
     }
 
-    public function informesSeguimientos()
+    public function informesSeguimiento(): HasMany
     {
         return $this->hasMany(InformesSeguimiento::class);
     }
 
-    public function avales()
+    public function avales(): HasMany
     {
         return $this->hasMany(Aval::class);
     }
 
+  
     
 }

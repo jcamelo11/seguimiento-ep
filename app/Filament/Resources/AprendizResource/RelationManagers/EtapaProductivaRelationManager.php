@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\BadgeColumn;
+use Carbon\Carbon;
 
 
 class EtapaProductivaRelationManager extends RelationManager
@@ -71,9 +72,11 @@ class EtapaProductivaRelationManager extends RelationManager
                         }
                     ]),
                 Tables\Columns\TextColumn::make('fecha_inicio')
-                    ->label('Fecha de Inicio'),
+                    ->label('Fecha de Inicio')
+                    ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('d M Y')),
                 Tables\Columns\TextColumn::make('fecha_final')
-                    ->label('Fecha de Finalización'),
+                    ->label('Fecha de Finalización')
+                    ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('d M Y')),
                 Tables\Columns\TextColumn::make('empresa')
                 ->label('Nombre de la Empresa'),
 
@@ -83,13 +86,6 @@ class EtapaProductivaRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\Action::make('miBotonPersonalizado')
-                ->label('Aval')
-                ->action(function () {
-                    // Aquí defines la lógica que deseas que se ejecute cuando se haga clic en el botón
-                })
-                ->icon('heroicon-s-clipboard-document-check') // Agregar un ícono al botón
-                ->color('info'),
                 Tables\Actions\CreateAction::make()
                 ->label('Registrar Etapa Productiva')
                 ->visible(! $this->ownerRecord->etapaProductiva()->exists())
