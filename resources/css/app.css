@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.long-text {
+    word-break: break-all; /* o puedes usar break-word */
+    word-wrap: break-word;
+    white-space: normal;
+}
+
