@@ -13,16 +13,18 @@ class InstructorSeguimiento extends Model
     protected $table = 'instructores_seguimiento';
 
     protected $fillable = [
-        'nombre',
+        'nombres',
         'apellidos',
         'telefono',
-        'correo',
+        'correo_personal',
+        'correo_institucional',
         'profesion',
         'area',
+        'tipo_contrato',
     ];
 
     public function aprendiz()
     {
-        return $this->hasMany(Aprendiz::class);
+        return $this->hasMany(Aprendiz::class, 'instructor_seguimiento_id');
     }
 }

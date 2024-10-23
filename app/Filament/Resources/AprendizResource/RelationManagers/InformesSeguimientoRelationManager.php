@@ -6,6 +6,7 @@ use App\Models\Aprendiz;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Carbon\Carbon;
 use Filament\Tables\Columns\BadgeColumn;
+
 
 class InformesSeguimientoRelationManager extends RelationManager
 {
@@ -36,6 +38,10 @@ class InformesSeguimientoRelationManager extends RelationManager
                     'RE - Errores' => 'RE - Errores',
                     'RE - Correcto' => 'RE - Correcto',
                 ]),
+                MarkdownEditor::make('observaciones')->columnSpan('full'),
+                
+        
+               
             ]);
     }
 
@@ -152,6 +158,7 @@ class InformesSeguimientoRelationManager extends RelationManager
                 }),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

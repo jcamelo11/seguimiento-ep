@@ -9,10 +9,11 @@ return new class extends Migration {
     {
         Schema::create('instructores_seguimiento', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre');
+            $table->string('nombres');
             $table->string('apellidos');
             $table->string('telefono')->nullable();
-            $table->string('correo')->unique();
+            $table->string('correo_personal')->nullable();
+            $table->string('correo_institucional')->nullable();
             $table->string('profesion')->nullable();
             $table->string('area')->nullable();
             $table->string('tipo_contrato')->nullable();
