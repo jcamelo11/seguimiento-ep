@@ -81,11 +81,16 @@ class InstructorSeguimientoResource extends Resource
                         'info' => 'Planta',
                         
                     ]),
+                    TextColumn::make('aprendices_count')
+                    ->label('Aprendices asignados')
+                    ->counts('aprendices'),
+            
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -99,7 +104,7 @@ class InstructorSeguimientoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //RelationManagers\AprendizRelationManager::class,
+            RelationManagers\AprendicesRelationManager::class,
         ];
     }
 

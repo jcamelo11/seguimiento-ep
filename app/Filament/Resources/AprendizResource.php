@@ -279,38 +279,67 @@ class AprendizResource extends Resource
     {
         return $table
             ->columns([
-                // define tus columnas aquí
                 TextColumn::make('programaFormacion.ficha')
-                    ->label('Ficha'),
+                    ->label('Ficha')
+                    ->searchable()
+                    ->sortable(),
+                BadgeColumn::make('estado') 
+                ->label('Estado')
+                ->colors([
+                    'primary',
+                    'info' => 'Activo',
+                    'warning' => 'Por Certificar',
+                    'success' => 'Certificado',
+                    'danger' => 'Cancelado/Retirado',
+                ])
+                ->icons([
+                    'heroicon-s-sparkles' => 'Activo',
+                    'heroicon-s-document-text' => 'Por Certificar',
+                    'heroicon-s-check-badge' => 'Certificado',
+                    'heroicon-s-x-circle' => 'Cancelado/Retirado',
+                ])
+                ->sortable(),
                 // TextColumn::make('tipo_documento')
                 //     ->label('Tipo documento'),
                 TextColumn::make('numero_documento')
-                    ->label('Número de documento'),
+                    ->label('Número de documento')
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('nombres')
-                    ->label('Nombres'),
+                    ->label('Nombres')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('apellidos')
-                    ->label('Apellidos'),
-                TextColumn::make('programaFormacion.nombre_programa')
-                    ->label('Programa de Formación'),
-                BadgeColumn::make('estado') 
-                    ->label('Estado')
-                    ->colors([
-                        'primary',
-                        'info' => 'Activo',
-                        'warning' => 'Por Certificar',
-                        'success' => 'Certificado',
-                        'danger' => 'Cancelado/Retirado',
-                    ])
-                    ->icons([
-                        'heroicon-s-sparkles' => 'Activo',
-                        'heroicon-s-document-text' => 'Por Certificar',
-                        'heroicon-s-check-badge' => 'Certificado',
-                        'heroicon-s-x-circle' => 'Cancelado/Retirado',
-                    ]),
+                    ->label('Apellidos')
+                    ->searchable()
+                    ->sortable(),
+                // TextColumn::make('programaFormacion.nombre_programa')
+                //     ->label('Programa de Formación')
+                //     ->searchable()
+                //     ->sortable(),
+                Tables\Columns\TextColumn::make('instructorSeguimiento.nombre_completo')
+    ->label('Instructor de Seguimiento')
+    ->sortable()   // Permitir ordenar
+    ->searchable(query: function (Builder $query, string $search) {
+        return $query->whereHas('instructorSeguimiento', function (Builder $query) use ($search) {
+            // Concatenar 'nombres' y 'apellidos' para buscar por nombre completo
+            $query->whereRaw("CONCAT(nombres, ' ', apellidos) like ?", ["%{$search}%"]);
+        });
+    }),
+
+                
             ])
             ->filters([
-                // define tus filtros aquí
+                Tables\Filters\SelectFilter::make('programa_formacion_id')
+                ->label('N° de ficha')
+                ->relationship('programaFormacion', 'ficha') // Relación para filtrar
+                ->searchable(),
+
+                Tables\Filters\SelectFilter::make('instructor_seguimiento_id')
+                ->label('Instructor seguimiento')
+                ->relationship('instructorSeguimiento', 'nombres') // Relación para filtrar
+                ->searchable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()

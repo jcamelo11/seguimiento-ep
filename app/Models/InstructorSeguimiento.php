@@ -23,7 +23,7 @@ class InstructorSeguimiento extends Model
         'tipo_contrato',
     ];
 
-    public function aprendiz()
+    public function aprendices()
     {
         return $this->hasMany(Aprendiz::class, 'instructor_seguimiento_id');
     }
