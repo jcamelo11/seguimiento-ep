@@ -44,10 +44,22 @@ class EtapaProductivaRelationManager extends RelationManager
                 Forms\Components\TextInput::make('empresa')
                     ->label('Empresa')
                     ->required(),
-                Forms\Components\DatePicker::make('fecha_final_prorroga')
-                    ->label('FECHA FINAL DE ETAPA PRODUCTIVA ANTES DE LA PRORROGA?'),
                 Forms\Components\TextInput::make('ciudad_practica')
                     ->label('Ciudad de la Práctica'),
+                Forms\Components\Select::make('etapa_de_la_practica')
+                    ->label('Estado de la Práctica')
+                    ->options([
+                        'PROD' => 'PROD',
+                        'LECT' => 'LECT',
+                        'LECT - PROD' => 'LECT - PROD',
+                        
+                    ]),
+                Forms\Components\DatePicker::make('patrocinio')
+                    ->label('Fecha Inicio Contrato Aprendizaje - Patrocinio Etapa Lectiva'), 
+                Forms\Components\DatePicker::make('fecha_final_prorroga')
+                    ->label('Fecha Final Etapa Productiva (Pre-Prórroga'),  
+                  
+                
             ]);
     }
 
@@ -79,6 +91,13 @@ class EtapaProductivaRelationManager extends RelationManager
                     ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('d M Y')),
                 Tables\Columns\TextColumn::make('empresa')
                 ->label('Nombre de la Empresa'),
+                Tables\Columns\TextColumn::make('etapa_de_la_practica')
+                ->label('Estado de la Práctica'),
+                Tables\Columns\TextColumn::make('patrocinio')
+                ->label('Fecha inicio Patrocinio')
+                
+            
+                
 
             
             ])

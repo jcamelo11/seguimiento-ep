@@ -27,4 +27,10 @@ class InstructorSeguimiento extends Model
     {
         return $this->hasMany(Aprendiz::class, 'instructor_seguimiento_id');
     }
+
+    public function getNombreCompletoAttribute()
+    {
+        return "{$this->nombres} {$this->apellidos}";
+    }
+
 }

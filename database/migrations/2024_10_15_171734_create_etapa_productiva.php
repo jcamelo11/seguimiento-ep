@@ -19,9 +19,8 @@ return new class extends Migration
             $table->date('fecha_final_prorroga')->nullable();
             $table->string('empresa');
             $table->string('ciudad_practica')->nullable();
-            $table->string('estado_etapa_productiva')->nullable();
             $table->string('etapa_de_la_practica')->nullable();
-            $table->boolean('patrocinio')->default(false);
+            $table->date('patrocinio')->nullable();
             $table->foreignId('aprendiz_id')->constrained('aprendices')->onDelete('cascade');
             $table->timestamps();
         });
