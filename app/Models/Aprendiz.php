@@ -47,6 +47,11 @@ class Aprendiz extends Model
         return $this->belongsTo(InstructorSeguimiento::class, 'instructor_seguimiento_id');
     }
 
+    public function instructorHistorial()
+    {
+        return $this->hasMany(InstructorHistorial::class);
+    }
+
     public function informesSeguimiento(): HasMany
     {
         return $this->hasMany(InformesSeguimiento::class);
@@ -55,6 +60,20 @@ class Aprendiz extends Model
     public function avales(): HasMany
     {
         return $this->hasMany(Aval::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($aprendiz) {
+            // Guardar el historial antes de actualizar
+            InstructorHistorial::create([
+                'aprendiz_id' => $aprendiz->id,
+                'instructor_seguimiento_id' => $aprendiz->getOriginal('instructor_seguimiento_id'),
+                'fecha_asignacion' => $aprendiz->getOriginal('fecha_asignacion'),
+            ]);
+        });
     }
 
   

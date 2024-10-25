@@ -7,6 +7,7 @@ use App\Models\Aprendiz;
 use App\Models\InstructorSeguimiento;
 use App\Models\ProgramaFormacion;
 use App\Models\EtapaProductiva;
+use App\Models\InstructorHistorial;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -233,11 +235,11 @@ class AprendizResource extends Resource
 
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Instrutor de Seguimiento')
+                        Forms\Components\Section::make('Instrutor de seguimiento')
                         ->icon('heroicon-o-presentation-chart-line')
                         ->schema([
                             Select::make('instructor_seguimiento_id')
-                                ->label('Instructor de Seguimiento')
+                                ->label('Nombre y apellido')
                                 ->options(InstructorSeguimiento::all()->pluck('nombre_completo', 'id'))
                                 ->searchable()
                                 ->preload(),
@@ -246,6 +248,25 @@ class AprendizResource extends Resource
                                 
                         ]),
 
+                        Forms\Components\Section::make('Instructor de seguimiento Anterior')
+                        ->icon('heroicon-o-user-minus')
+                        ->hidden(fn ($record) => optional($record->instructorHistorial)->isEmpty())
+                        ->schema([
+                            Forms\Components\Repeater::make('instructor_historial')
+                            ->relationship('instructorHistorial') // Asegúrate de que la relación esté definida
+                            ->schema([
+                                Forms\Components\TextInput::make('instructor_seguimiento_id')
+                                    ->label('Instructor')
+                                    ->disabled()
+                                    ->formatStateUsing(fn ($state) => 
+                                        \App\Models\InstructorSeguimiento::find($state)?->nombre_completo ?? 'No asignado' // Manejo de casos nulos
+                                    ),
+                                Forms\Components\DatePicker::make('fecha_asignacion')
+                                    ->label('Fecha de Asignación')
+                                    ->disabled(),
+                            ])
+                            ->disableLabel()
+                        ]),
 
                         Forms\Components\Section::make('Estado del Aprendiz')
                         ->icon('heroicon-o-arrows-up-down')
