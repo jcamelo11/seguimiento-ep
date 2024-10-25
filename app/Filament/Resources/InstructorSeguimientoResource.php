@@ -117,4 +117,9 @@ class InstructorSeguimientoResource extends Resource
             'seguimiento-estado' => Pages\InstructorSeguimientoEstado::route('/estado'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) InstructorSeguimiento::count();
+    }
 }
