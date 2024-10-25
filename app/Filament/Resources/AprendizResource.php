@@ -6,6 +6,7 @@ use App\Filament\Resources\AprendizResource\Pages;
 use App\Models\Aprendiz;
 use App\Models\InstructorSeguimiento;
 use App\Models\ProgramaFormacion;
+use App\Models\EtapaProductiva;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
@@ -282,7 +283,8 @@ class AprendizResource extends Resource
                 TextColumn::make('programaFormacion.ficha')
                     ->label('Ficha')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 BadgeColumn::make('estado') 
                 ->label('Estado')
                 ->colors([
@@ -299,34 +301,57 @@ class AprendizResource extends Resource
                     'heroicon-s-x-circle' => 'Cancelado/Retirado',
                 ])
                 ->sortable(),
-                // TextColumn::make('tipo_documento')
-                //     ->label('Tipo documento'),
+                TextColumn::make('tipo_documento')
+                  ->label('Tipo documento')
+                  ->toggleable(),
                 TextColumn::make('numero_documento')
                     ->label('Número de documento')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('nombres')
                     ->label('Nombres')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('apellidos')
                     ->label('Apellidos')
                     ->searchable()
-                    ->sortable(),
-                // TextColumn::make('programaFormacion.nombre_programa')
-                //     ->label('Programa de Formación')
-                //     ->searchable()
-                //     ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
+                TextColumn::make('programaFormacion.nombre_programa')
+                    ->label('Programa de Formación')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\BadgeColumn::make('etapaProductiva.modalidad_etapa')
+                    ->label('Etapa Productiva')
+                    ->sortable()
+                    ->toggleable()
+                    ->colors([
+                        'warning' => 'CONTRETO DE APRENDIZAJE',
+                        'info' => function ($state) {
+                            return in_array($state, [
+                                'MONITORIAS', 
+                                'PASANTIA - APOYO A UNA UNIDAD PRODUCTIVA FAMILIAR', 
+                                'PASANTIA - APOYO INSTITUCION ESTATAL, MUNIC, VERED, ONG', 
+                                'PASANTIA - DE ASESORIA A PYMES', 
+                                'PROYECTO PRODUCTIVO', 
+                                'PROYECTO PRODUCTIVO - CREACION DE UNIDAD PRODUCTIVA', 
+                                'VINCULACION LABORAL'
+                            ]);
+                        }
+                    ]),
                 Tables\Columns\TextColumn::make('instructorSeguimiento.nombre_completo')
-    ->label('Instructor de Seguimiento')
-    ->sortable()   // Permitir ordenar
-    ->searchable(query: function (Builder $query, string $search) {
-        return $query->whereHas('instructorSeguimiento', function (Builder $query) use ($search) {
-            // Concatenar 'nombres' y 'apellidos' para buscar por nombre completo
-            $query->whereRaw("CONCAT(nombres, ' ', apellidos) like ?", ["%{$search}%"]);
-        });
-    }),
+                ->label('Instructor de Seguimiento')
+                ->sortable()   // Permitir ordenar
+                ->searchable(query: function (Builder $query, string $search) {
+                    return $query->whereHas('instructorSeguimiento', function (Builder $query) use ($search) {
+                        // Concatenar 'nombres' y 'apellidos' para buscar por nombre completo
+                        $query->whereRaw("CONCAT(nombres, ' ', apellidos) like ?", ["%{$search}%"]);
+                    });
+                })->toggleable(),
 
                 
             ])

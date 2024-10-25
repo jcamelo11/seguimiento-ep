@@ -46,7 +46,7 @@ class InstructorSeguimientoResource extends Resource
                         ->label('Número de Telefono')
                         ->required(),
                     Forms\Components\TextInput::make('area')
-                        ->label('Area de Esrudio'),
+                        ->label('Area'),
                     Forms\Components\TextInput::make('profesion')
                         ->label('Profesión'),
                     Forms\Components\Select::make('tipo_contrato')
@@ -114,6 +114,7 @@ class InstructorSeguimientoResource extends Resource
             'index' => Pages\ListInstructorSeguimientos::route('/'),
             'create' => Pages\CreateInstructorSeguimiento::route('/create'),
             'edit' => Pages\EditInstructorSeguimiento::route('/{record}/edit'),
+            'seguimiento-estado' => Pages\InstructorSeguimientoEstado::route('/estado'),
         ];
     }
 }

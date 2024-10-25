@@ -23,7 +23,7 @@ class EtapaProductivaRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('modalidad_etapa')
-                    ->label('Modelidad de etapa Productiva')
+                    ->label('Modalidad de Etapa Productiva')
                     ->options([
                         'CONTRETO DE APRENDIZAJE' => 'CONTRETO APRENDIZAJE',
                         'MONITORIAS' => 'MONITORIAS',
@@ -69,6 +69,7 @@ class EtapaProductivaRelationManager extends RelationManager
             ->recordTitleAttribute('modalidad_etapa')
             ->columns([
                 Tables\Columns\BadgeColumn::make('modalidad_etapa')
+                ->label('Modalidad')
                     ->colors([
                         'warning' => 'CONTRETO DE APRENDIZAJE',
                         'info' => function ($state) {
