@@ -21,6 +21,8 @@ class InstructorSeguimientoResource extends Resource
 {
     protected static ?string $model = InstructorSeguimiento::class;
 
+    protected static ?string $recordTitleAttribute = 'nombres';
+
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $label = 'Instructor';
     protected static ?string $pluralLabel = 'Instructores';
@@ -67,27 +69,48 @@ class InstructorSeguimientoResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('nombres')
-                    ->label('Nombres'),
+                    ->label('Nombres')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('apellidos')
-                    ->label('Apellidos'),
+                    ->label('Apellidos')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('correo_personal')
-                    ->label('Correo Electrónico'),
+                    ->label('Correo Electrónico')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 TextColumn::make('telefono')
-                    ->label('N° de Telefono'),
+                    ->label('N° de Telefono')
+                    ->sortable()
+                    ->toggleable(),
                 BadgeColumn::make('tipo_contrato') 
                     ->label('Tipo de Contrato')
                     ->colors([
                         'primary' => 'Contratista',
                         'info' => 'Planta',
                         
-                    ]),
+                    ])
+                    ->sortable()
+                    ->toggleable(),
                     TextColumn::make('aprendices_count')
                     ->label('Aprendices asignados')
-                    ->counts('aprendices'),
+                    ->counts('aprendices')
+                    ->sortable()
+                    ->toggleable(),
             
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('tipo_contrato')
+                ->label('Tipo de Contrato')
+                ->options([
+                    'Contratista' => 'Contratista',
+                    'Planta' => 'Planta',
+                ]),
+        
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -121,5 +144,10 @@ class InstructorSeguimientoResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return (string) InstructorSeguimiento::count();
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nombres', 'apellidos', 'correo_personal'];
     }
 }

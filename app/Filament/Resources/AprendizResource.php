@@ -31,6 +31,7 @@ use App\Filament\Resources\AprendizResource\RelationManagers;
 class AprendizResource extends Resource
 {
     protected static ?string $model = Aprendiz::class;
+    protected static ?string $recordTitleAttribute = 'nombres';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $label = 'Aprendiz';
     protected static ?string $pluralLabel = 'Aprendices';
@@ -425,6 +426,11 @@ class AprendizResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return (string) Aprendiz::count();
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nombres', 'apellidos', 'correo_personal', 'programaFormacion.ficha', 'numero_documento'];
     }
 
 }

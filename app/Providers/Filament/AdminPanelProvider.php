@@ -19,6 +19,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Resources\InstructorseguimientoResource\Pages\InstructorSeguimientoEstado;
+use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 
 
 class AdminPanelProvider extends PanelProvider
@@ -59,10 +60,14 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->plugins([
+                GlobalSearchModalPlugin::make()
+            ])
             ->brandName('Seguimiento - EP')
             ->brandLogo(asset('images/logoo.svg'))
             //->darkModeBrandLogo(asset('images/logoodark.svg'))
             ->brandLogoHeight('2.5rem');
+            //->font('Roboto');
             
     }
 }
