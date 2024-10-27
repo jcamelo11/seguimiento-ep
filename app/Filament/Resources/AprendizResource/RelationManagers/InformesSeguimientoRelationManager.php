@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Carbon\Carbon;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\Color;
+
 
 
 class InformesSeguimientoRelationManager extends RelationManager
@@ -78,7 +80,9 @@ class InformesSeguimientoRelationManager extends RelationManager
                 ->action(function () {
                     // Aquí defines la lógica que deseas que se ejecute cuando se haga clic en el botón
                 })
-                ->icon('heroicon-s-clipboard-document-check'),
+                ->icon('heroicon-s-clipboard-document-check')
+                ->color('secondary')
+                ,
                 
                 Tables\Actions\Action::make('generarInformes')
                 ->icon('heroicon-s-newspaper')

@@ -8,15 +8,15 @@
 
         <div class="overflow-x-auto relative">
             <table class="w-full table-auto">
-                <thead class="sticky top-0 z-10 bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-200">
+                <thead class="sticky top-0 z-10 bg-emerald-100 dark:bg-emerald-800 text-emerald-700 dark:text-emerald-200 text-white" style="background-color: #39A900;">
                     <tr>
-                        <th class="px-6 py-4 font-semibold text-left">Instructor</th>
-                        <th class="px-6 py-4 font-semibold text-center">Asignados</th>
-                        <th class="px-6 py-4 font-semibold text-center">Activos</th>
-                        <th class="px-6 py-4 font-semibold text-center">Por Certificar</th>
-                        <th class="px-6 py-4 font-semibold text-center">Certificados</th>
-                        <th class="px-6 py-4 font-semibold text-center">Retirados/Cancelados</th>
-                        <th class="px-6 py-4 font-semibold text-center">Total</th>
+                        <th class="px-6 py-4 font-semibold text-left text-success">Instructor</th>
+                        <th class="px-6 py-4 font-semibold text-center">Aprendices Asignados</th>
+                        <th class="px-6 py-4 font-semibold text-center">Aprendices Activos</th>
+                        <th class="px-6 py-4 font-semibold text-center">Aprendices Por Certificar</th>
+                        <th class="px-6 py-4 font-semibold text-center">Aprendices Certificados</th>
+                        <th class="px-6 py-4 font-semibold text-center">Aprendices Retirados/Cancelados</th>
+                        <th class="px-6 py-4 font-semibold text-center">Aprendices Total</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -33,7 +33,7 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <tr class="bg-emerald-50 dark:bg-emerald-900 font-bold text-emerald-800 dark:text-emerald-200">
+                    <tr class="bg-emerald-50 dark:bg-emerald-900 font-bold text-emerald-800 dark:text-emerald-200 text-white" style="background-color: #04324d;">
                         <td class="px-6 py-4 whitespace-nowrap">Total</td>
                         <td class="px-6 py-4 text-center">{{ $this->getInstructoresData()->sum('total_asignados') }}</td>
                         <td class="px-6 py-4 text-center">{{ $this->getInstructoresData()->sum('total_activos') }}</td>

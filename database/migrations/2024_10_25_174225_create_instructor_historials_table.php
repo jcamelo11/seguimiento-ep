@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('instructor_historials', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('aprendiz_id');
-            $table->unsignedBigInteger('instructor_seguimiento_id');
-            $table->date('fecha_asignacion');
+            $table->unsignedBigInteger('aprendiz_id')->nullable();
+            $table->unsignedBigInteger('instructor_seguimiento_id')->nullable();
+            $table->date('fecha_asignacion')->nullable();
             
 
-            $table->foreign('aprendiz_id')->references('id')->on('aprendices')->onDelete('cascade');
-            $table->foreign('instructor_seguimiento_id')->references('id')->on('instructores_seguimiento')->onDelete('cascade');
+            $table->foreign('aprendiz_id')->references('id')->on('aprendices')->onDelete('cascade')->nullable();
+            $table->foreign('instructor_seguimiento_id')->references('id')->on('instructores_seguimiento')->onDelete('cascade')->nullable();
             $table->timestamps();
         });
     }

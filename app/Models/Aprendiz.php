@@ -65,16 +65,19 @@ class Aprendiz extends Model
     protected static function boot()
     {
         parent::boot();
-
+    
         static::updating(function ($aprendiz) {
-            // Guardar el historial antes de actualizar
-            InstructorHistorial::create([
-                'aprendiz_id' => $aprendiz->id,
-                'instructor_seguimiento_id' => $aprendiz->getOriginal('instructor_seguimiento_id'),
-                'fecha_asignacion' => $aprendiz->getOriginal('fecha_asignacion'),
-            ]);
+            // Solo guardar el historial si instructor_seguimiento_id cambia
+            if ($aprendiz->isDirty('instructor_seguimiento_id')) {
+                InstructorHistorial::create([
+                    'aprendiz_id' => $aprendiz->id,
+                    'instructor_seguimiento_id' => $aprendiz->getOriginal('instructor_seguimiento_id'),
+                    'fecha_asignacion' => $aprendiz->getOriginal('fecha_asignacion'),
+                ]);
+            }
         });
     }
+    
 
   
     
