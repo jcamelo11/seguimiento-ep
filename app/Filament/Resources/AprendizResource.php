@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\RelationManagers\RelationManagerConfiguration;
 use App\Filament\Resources\AprendizResource\RelationManagers;
+use App\Filament\Exports\AprendizExporter;
+use Filament\Tables\Actions\ExportAction;
 
 
 class AprendizResource extends Resource
@@ -367,7 +369,7 @@ class AprendizResource extends Resource
                     ]),
                 Tables\Columns\TextColumn::make('instructorSeguimiento.nombre_completo')
                 ->label('Instructor de Seguimiento')
-                ->sortable()   // Permitir ordenar
+                  // Permitir ordenar
                 ->searchable(query: function (Builder $query, string $search) {
                     return $query->whereHas('instructorSeguimiento', function (Builder $query) use ($search) {
                         // Concatenar 'nombres' y 'apellidos' para buscar por nombre completo
@@ -378,6 +380,15 @@ class AprendizResource extends Resource
                 
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('estado')
+                ->label('Estado')
+                ->options([
+                    'Activo' => 'Activo',
+                    'Por Certificar' => 'Por Certificar',
+                    'Certificado' => 'Certificado',
+                    'Cancelado/Retirado' => 'Cancelado/Retirado',
+                ]),
+
                 Tables\Filters\SelectFilter::make('programa_formacion_id')
                 ->label('N° de ficha')
                 ->relationship('programaFormacion', 'ficha') // Relación para filtrar
@@ -393,6 +404,10 @@ class AprendizResource extends Resource
                 ->label('Ver'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(AprendizExporter::class)
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
