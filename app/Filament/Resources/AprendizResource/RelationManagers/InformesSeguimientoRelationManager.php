@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AprendizResource\RelationManagers;
 
 use App\Models\Aprendiz;
+use App\Models\Aval;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Carbon\Carbon;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\Color;
+use App\Mail\AprendizParaCertificacion;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -78,11 +81,49 @@ class InformesSeguimientoRelationManager extends RelationManager
                 Tables\Actions\Action::make('generarAval')
                 ->label('Aval')
                 ->action(function () {
-                    // Aquí defines la lógica que deseas que se ejecute cuando se haga clic en el botón
+                    $aprendiz = $this->getOwnerRecord(); // Obtener el aprendiz actual
+            
+                    // Crear el aval para este aprendiz
+                    Aval::create([
+                        'aprendiz_id' => $aprendiz->id,
+                        'fecha' => now(),  // Fecha actual
+                        'observaciones' => 'Aprendiz con informes de seguimiento OK para CERTIFICACIÓN',
+                    ]);
+
+                     // Usa el correo institucional, o correo personal si el institucional no existe
+                    $correoDestinatario = $aprendiz->correo_institucional ?? $aprendiz->correo_personal;
+
+                    // Verifica que el correo exista antes de enviar
+                    if ($correoDestinatario) {
+                        // Enviar el correo de notificación al aprendiz
+                        Mail::to($correoDestinatario)->send(new AprendizParaCertificacion($aprendiz));
+
+                        // Notificación de éxito dentro de la aplicación
+                        Notification::make()
+                            ->title('Éxito')
+                            ->body('Aval generado y correo enviado al aprendiz.')
+                            ->success()
+                            ->send();
+                    } else {
+                        // Notificación de error si no hay correo disponible
+                        Notification::make()
+                            ->title('Error')
+                            ->body('El aprendiz no tiene un correo registrado.')
+                            ->danger()
+                            ->send();
+                    }
                 })
                 ->icon('heroicon-s-clipboard-document-check')
                 ->color('secondary')
-                ,
+                ->visible(function () {
+                    // La condición de visibilidad que ya implementaste
+                    return $this->getOwnerRecord()
+                    ->informesSeguimiento()
+                    ->where('estado_informe', '!=', 'RE - Correcto')
+                    ->doesntExist();
+                }),
+            
+                
                 
                 Tables\Actions\Action::make('generarInformes')
                 ->icon('heroicon-s-newspaper')
