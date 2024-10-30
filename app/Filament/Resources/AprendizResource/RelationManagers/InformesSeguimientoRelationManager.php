@@ -19,6 +19,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\Color;
 use App\Mail\AprendizParaCertificacion;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 
 
@@ -91,7 +92,7 @@ class InformesSeguimientoRelationManager extends RelationManager
                     ]);
 
                      // Usa el correo institucional, o correo personal si el institucional no existe
-                    $correoDestinatario = $aprendiz->correo_institucional ?? $aprendiz->correo_personal;
+                    $correoDestinatario = $aprendiz->correo_personal ?? $aprendiz->correo_institucional;
 
                     // Verifica que el correo exista antes de enviar
                     if ($correoDestinatario) {

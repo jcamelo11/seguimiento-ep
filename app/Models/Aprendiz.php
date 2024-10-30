@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Mail\AsignacionInstructorMail;
+use Illuminate\Support\Facades\Mail;
 
 class Aprendiz extends Model
 {
@@ -75,8 +77,26 @@ class Aprendiz extends Model
                     'fecha_asignacion' => $aprendiz->getOriginal('fecha_asignacion'),
                 ]);
             }
+            
+            $esReasignacion = !is_null($aprendiz->getOriginal('instructor_seguimiento_id'));
+
+            // Solo enviar correo si cambia el instructor o la fecha de asignación
+            if ($aprendiz->isDirty('instructor_seguimiento_id') || $aprendiz->isDirty('fecha_asignacion')) {
+                // Obtener el nuevo instructor y la fecha de asignación
+                $instructor = $aprendiz->instructorSeguimiento;
+                $fechaAsignacion = $aprendiz->fecha_asignacion;
+
+                // Enviar correo al aprendiz sobre la asignación o reasignación
+                Mail::to($aprendiz->correo_institucional ?? $aprendiz->correo_personal)
+                    ->send(new AsignacionInstructorMail($aprendiz, $instructor, $fechaAsignacion, $esReasignacion));
+            }
         });
     }
+
+   
+
+
+
     
 
   
