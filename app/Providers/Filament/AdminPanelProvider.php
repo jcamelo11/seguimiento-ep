@@ -67,9 +67,9 @@ class AdminPanelProvider extends PanelProvider
                 GlobalSearchModalPlugin::make()
             ])
             ->brandName('Seguimiento - EP')
-            ->brandLogo(asset('images/logoo.svg'))
-            //->darkModeBrandLogo(asset('images/logoodark.svg'))
-            ->brandLogoHeight('2.5rem');
+            ->brandLogo(asset('images/seguimiento-logo.svg'))
+            ->darkModeBrandLogo(asset('images/seguimiento-logo-negativo.svg'))
+            ->brandLogoHeight('5.9rem');
             //->font('Roboto');
             
     }
