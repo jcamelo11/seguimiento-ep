@@ -104,7 +104,8 @@ class InformesSeguimientoRelationManager extends RelationManager
                             ->title('Éxito')
                             ->body('Aval generado y correo enviado al aprendiz.')
                             ->success()
-                            ->send();
+                            ->send()
+                           ;
                     } else {
                         // Notificación de error si no hay correo disponible
                         Notification::make()
@@ -117,14 +118,14 @@ class InformesSeguimientoRelationManager extends RelationManager
                 ->icon('heroicon-s-clipboard-document-check')
                 ->color('secondary')
                 ->visible(function () {
-                    // La condición de visibilidad que ya implementaste
-                    return $this->getOwnerRecord()
-                    ->informesSeguimiento()
-                    ->where('estado_informe', '!=', 'RE - Correcto')
-                    ->doesntExist();
+                    $aprendiz = $this->getOwnerRecord();
+                    
+                    // Verificar que existen informes y que todos estén en 'RE - Correcto'
+                    return $aprendiz->informesSeguimiento()->exists() &&
+                           $aprendiz->informesSeguimiento()
+                                    ->where('estado_informe', '!=', 'RE - Correcto')
+                                    ->doesntExist();
                 }),
-            
-                
                 
                 Tables\Actions\Action::make('generarInformes')
                 ->icon('heroicon-s-newspaper')

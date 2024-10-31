@@ -54,14 +54,58 @@
             font-weight: 600;
             color: #39A900;
         }
-        .report-periods {
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .table-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
         }
-        .report-periods th, .report-periods td {
-          transition: background-color 0.3s ease;
+        .table-wrapper {
+            max-width: 1200px; /* Adjust this value as needed */
+            width: 100%;
         }
-        .report-periods tr:hover {
-          background-color: #f0f0f0 !important;
+        .modern-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .modern-table th, .modern-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .modern-table thead th {
+            background-color: #39A900;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .modern-table tbody tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        .modern-table tbody tr:hover {
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+        .modern-table tbody td:first-child {
+            font-weight: bold;
+        }
+        .table-header {
+            background-color: #39A900;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
         }
     </style>
 </head>
@@ -71,7 +115,7 @@
             <img src="{{ asset('/images/logoo.svg') }}" alt="Logo" style="width: 30%; max-width: 150px; height: auto;" />
         </div>
 
-        <h2>{{ $esReasignacion ? 'Reasignación de Instructor de Seguimiento' : 'Asignación de Instructor de Seguimiento' }}</h2>
+        {{-- <h2>{{ $esReasignacion ? 'Reasignación de Instructor de Seguimiento' : 'Asignación de Instructor de Seguimiento' }}</h2> --}}
 
         <p>Estimado/a <strong>{{ $aprendizNombre }}</strong>,</p>
 
@@ -85,7 +129,9 @@
             <p>Cordialmente,</p>
             <p><em><span>Equipo de Seguimiento de Etapa Productiva</span></em></p>
         @else
-            <p>Le informo que se le ha asignado a <strong>{{ $instructorNombre }}</strong> como su <span> <strong>Instructor de Seguimiento </strong></span>. Puede comunicarse con el/lla mediante correo electrónico a <a href="{{ $instructorCorreo }}">{{ $instructorCorreo }}</a>. A continuación, le detallo algunas sugerencias para iniciar el procedimiento de Seguimiento a Etapa Productiva:</p>
+            <p>
+                Le informamos que se le ha asignado a <strong>{{ $instructorNombre }}</strong> como su <span> <strong>Instructor de Seguimiento </strong></span>. Puede comunicarse mediante correo electrónico a <a href="{{ $instructorCorreo }}">{{ $instructorCorreo }}</a>. A continuación, le detallo algunas sugerencias para iniciar el procedimiento de Seguimiento a Etapa Productiva:
+            </p>
 
             <ul>
                 <li><strong>Contacto Inicial</strong>: Comuníquese con su instructor de seguimiento a través del correo electrónico.</li>
@@ -97,7 +143,9 @@
 
             <h3>Entregas de Informes</h3>
             
-            <p>Durante los 6 meses de etapa productiva, deberá entregar un total de <strong>15 informes</strong> a su instructor de seguimiento. Estos se entregarán en dos formatos:</p>
+            <p>
+                Durante los 6 meses de etapa productiva, deberá entregar un total de <strong>15 informes</strong> a su instructor de seguimiento. Estos se entregarán en dos formatos:
+            </p>
             <ul>
                 <li><strong>Formato 023, Versión 4</strong>: Para planeación, seguimiento y evaluación de la etapa productiva.</li>
                 <li><strong>Formato 147, Versión 3</strong>: Para la bitácora.</li>
@@ -119,91 +167,88 @@
                 <li><strong>Formato 147 Bitácora Versión 03</strong> - Modelo diligenciado.</li>
             </ul>
 
-            <p>Al final de este correo, encontrará un cuadro con los informes a entregar y sus respectivas fechas.</p>
+            <p>
+                Al final de este correo, encontrará un cuadro con los informes a entregar y sus respectivas fechas.
+            </p>
 
-            <p>Quedo atento a cualquier inquietud que pueda tener, puede comunicarse conmigo a través de este correo electrónico: <a href="mailto:productivacbc@sena.edu.co">productivacbc@sena.edu.co</a>.</p>
+            <p>
+                Quedomos atento a cualquier inquietud que pueda tener, puede comunicarse con nosotros a través de este correo electrónico: <a href="mailto:productivacbc@sena.edu.co">productivacbc@sena.edu.co</a>.
+            </p>
             <p>Cordialmente,</p>
             <p><em><span>Equipo de Seguimiento de Etapa Productiva</span></em></p>
 
-            <table class="report-periods" style="width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 20px;">
-                <thead>
-                  <tr>
-                    <th colspan="6" style="text-align: center; padding: 10px; border: 1px solid #39A900; background-color: #39A900; color: white; font-size: 14px;">FECHA INICIAL Y FINAL DE LOS PERÍODOS DE LOS INFORMES</th>
-                  </tr>
-                  <tr>
-                    <th style="text-align: center; padding: 8px; border: 1px solid #e0e0e0; background-color: #f0f0f0;">Informe</th>
-                    <th style="text-align: center; padding: 8px; border: 1px solid #e0e0e0; background-color: #f0f0f0;">Fecha Inicio</th>
-                    <th style="text-align: center; padding: 8px; border: 1px solid #e0e0e0; background-color: #f0f0f0;">Fecha Final</th>
-                    <th style="text-align: center; padding: 8px; border: 1px solid #e0e0e0; background-color: #f0f0f0;">Informe</th>
-                    <th style="text-align: center; padding: 8px; border: 1px solid #e0e0e0; background-color: #f0f0f0;">Fecha Inicio</th>
-                    <th style="text-align: center; padding: 8px; border: 1px solid #e0e0e0; background-color: #f0f0f0;">Fecha Final</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Form 023 - 1 - Concertación</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">02-oct-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">16-oct-23</td>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 1</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">17-oct-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">31-oct-23</td>
-                  </tr>
-                  <tr style="background-color: #f9f9f9;">
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 2</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">01-nov-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">15-nov-23</td>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 3</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">16-nov-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">30-nov-23</td>
-                  </tr>
-                  <tr>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 4</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">01-dic-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">15-dic-23</td>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 5</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">16-dic-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">30-dic-23</td>
-                  </tr>
-                  <tr style="background-color: #f9f9f9;">
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 6</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">02-oct-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">31-dic-23</td>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Form 023 - 2 - Parcial</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">31-dic-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">14-ene-24</td>
-                  </tr>
-                  <tr>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 7</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">15-ene-24</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">29-ene-24</td>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 8</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">30-ene-24</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">13-feb-24</td>
-                  </tr>
-                  <tr style="background-color: #f9f9f9;">
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 9</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">14-feb-24</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">28-feb-24</td>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 10</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">29-feb-24</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">14-mar-24</td>
-                  </tr>
-                  <tr>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 11</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">15-mar-24</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">01-abr-24</td>
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Bitacora - 12</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">02-oct-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">01-abr-24</td>
-                  </tr>
-                  <tr style="background-color: #f9f9f9;">
-                    <td style="text-align: left; padding: 8px; border: 1px solid #e0e0e0;">Form 023 - 3 - Final</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">02-oct-23</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;">01-abr-24</td>
-                    <td style="text-align: center; padding: 8px; border: 1px solid #e0e0e0;" colspan="3"></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="signature">
+            
+                <table class="signature-table">
+                    <tr>
+                        <th>Nombres</th>
+                        <td>{{ $aprendizNombre }}</td>
+                        <th>Ficha</th>
+                        <td>{{ $ficha }}</td>
+                    </tr>
+                    <tr>
+                        <th>Programa</th>
+                        <td>{{ $programa }}</td>
+                        <th>Nivel</th>
+                        <td>{{ $nivel }}</td>
+                    </tr>
+                    <tr>
+                        <th>Documento</th>
+                        <td>{{ $documento }}</td>
+                        <th>Teléfono</th>
+                        <td>{{ $telefono }}</td>
+                       
+                    </tr>
+                    
+                    <tr>
+                        <th>Correo</th>
+                        <td>{{ $correo }}</td>
+                        <th>Modalidad</th>
+                        <td>{{ $modalidad }}</td>
+                       
+                    </tr>
+                    <tr>
+                        <th>Instructor Lider</th>
+                        <td>{{ $instructorLider }}</td>
+                        <th>modalidad EP</th>
+                        <td>{{ $modalidadEtapa }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha Inicio EP</th>
+                        <td>{{ $inicio }}</td>
+                        <th>Fecha Final EP</th>
+                        <td>{{ $final }}</td>
+                    </tr>
+                    <tr>
+                        <th>Empresa</th>
+                        <td>{{ $empresa }}</td>
+                        <th>Instructor de Seguimiento</th>
+                        <td colspan="3">{{ $instructorNombre }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>Fecha inicial y final de los períodos de los informes</h3>
+
+            
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Informe</th>
+                  <th>Fecha Inicio</th>
+                  <th>Fecha Final</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($informes as $informe)
+                    <tr>
+                        <td>{{ $informe->nombre }}</td>
+                        <td>{{ $informe->fecha_inicio ? \Carbon\Carbon::parse($informe->fecha_inicio)->format('d-m-Y') : 'N/A' }}</td> 
+                        <td>{{ $informe->fecha_entrega ? \Carbon\Carbon::parse($informe->fecha_entrega)->format('d-m-Y') : 'N/A' }}</td> 
+                    </tr>
+                @endforeach
+            </tbody>
+            </table>
         @endif
 
         
