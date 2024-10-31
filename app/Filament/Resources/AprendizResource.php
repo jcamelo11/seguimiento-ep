@@ -28,6 +28,7 @@ use Filament\Resources\RelationManagers\RelationManagerConfiguration;
 use App\Filament\Resources\AprendizResource\RelationManagers;
 use App\Filament\Exports\AprendizExporter;
 use Filament\Tables\Actions\ExportAction;
+use Illuminate\Database\Eloquent\Model; 
 
 
 class AprendizResource extends Resource
@@ -446,6 +447,21 @@ class AprendizResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return ['nombres', 'apellidos', 'correo_personal', 'programaFormacion.ficha', 'numero_documento'];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        // Concatenar nombres y apellidos para mostrar el nombre completo
+        return "{$record->nombres} {$record->apellidos}";
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            $record->tipo_documento => $record->numero_documento,
+            'Ficha' => $record->programaFormacion->ficha ?? 'No asignado',
+           
+        ];
     }
 
 }

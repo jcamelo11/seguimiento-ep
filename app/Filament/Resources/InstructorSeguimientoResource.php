@@ -16,6 +16,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
+use Illuminate\Database\Eloquent\Model; 
 
 class InstructorSeguimientoResource extends Resource
 {
@@ -149,5 +150,11 @@ class InstructorSeguimientoResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return ['nombres', 'apellidos', 'correo_personal'];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        // Concatenar nombres y apellidos para mostrar el nombre completo
+        return "{$record->nombres} {$record->apellidos}";
     }
 }
