@@ -21,7 +21,7 @@
         }
         .logo {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 20px;
         }
         h1, h2, h3 {
             color: #39A900;
@@ -59,7 +59,7 @@
 <body>
     <div class="container">
         <div class="logo">
-            <img src="{{ asset('/images/logoo.svg') }}" alt="Logo" style="width: 30%; max-width: 150px; height: auto;" />
+            <img src="{{ asset('/images/seguimiento-logo.svg') }}" alt="Logo" style="width: 60%; max-width: 400px; height: auto;" />
 
 
         </div>
@@ -91,43 +91,47 @@
             
             <table class="signature-table">
                 <tr>
+                    <th>Nombres</th>
+                    <td>{{ $nombreCompleto }}</td>
                     <th>Ficha</th>
                     <td>{{ $ficha }}</td>
+                </tr>
+                <tr>
                     <th>Programa</th>
                     <td>{{ $programa }}</td>
-                </tr>
-                <tr>
                     <th>Nivel</th>
                     <td>{{ $nivel }}</td>
-                    <th>Documento</th>
-                    <td>{{ $documento }}</td>
                 </tr>
                 <tr>
+                    <th>Documento</th>
+                    <td>{{ $documento }}</td>
                     <th>Teléfono</th>
                     <td>{{ $telefono }}</td>
-                    <th>Correo</th>
-                    <td>{{ $correo }}</td>
+                   
                 </tr>
                 
                 <tr>
+                    <th>Correo</th>
+                    <td>{{ $correo }}</td>
                     <th>Modalidad</th>
                     <td>{{ $modalidad }}</td>
+                   
+                </tr>
+                <tr>
                     <th>Instructor Lider</th>
                     <td>{{ $instructorLider }}</td>
-                </tr>
-                <tr>
-                    <th>Contrato</th>
+                    <th>modalidad EP</th>
                     <td>{{ $modalidadEtapa }}</td>
-                    <th>Inicio EP</th>
-                    <td>{{ $inicio }}</td>
                 </tr>
                 <tr>
-                    <th>Fin EP</th>
+                    <th>Fecha Inicio EP</th>
+                    <td>{{ $inicio }}</td>
+                    <th>Fecha Final EP</th>
                     <td>{{ $final }}</td>
+                </tr>
+                <tr>
                     <th>Empresa</th>
                     <td>{{ $empresa }}</td>
-                </tr>
-                <tr>
                     <th>Instructor de Seguimiento</th>
                     <td colspan="3">{{ $instructorNombre }}</td>
                 </tr>

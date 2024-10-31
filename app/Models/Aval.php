@@ -20,6 +20,6 @@ class Aval extends Model
 
     public function aprendiz()
     {
-        return $this->belongsTo(Aprendiz::class);
+        return $this->belongsTo(Aprendiz::class, 'aprendiz_id');
     }
 }

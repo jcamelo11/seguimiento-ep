@@ -8,6 +8,7 @@ use App\Models\InstructorSeguimiento;
 use App\Models\ProgramaFormacion;
 use App\Models\EtapaProductiva;
 use App\Models\InstructorHistorial;
+use App\Models\Aval;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
@@ -254,23 +255,18 @@ class AprendizResource extends Resource
 
                         Forms\Components\Section::make('Instructor de seguimiento Anterior')
                         ->icon('heroicon-o-user-minus')
-                        ->hidden(fn ($record) => optional($record->instructorHistorial)->isEmpty())
                         ->schema([
-                            Forms\Components\Repeater::make('instructor_historial')
-                            ->relationship('instructorHistorial') // Asegúrate de que la relación esté definida
-                            ->schema([
-                                Forms\Components\TextInput::make('instructor_seguimiento_id')
-                                    ->label('Instructor')
-                                    ->disabled()
-                                    ->formatStateUsing(fn ($state) => 
-                                        \App\Models\InstructorSeguimiento::find($state)?->nombre_completo ?? 'No asignado' // Manejo de casos nulos
-                                    ),
-                                Forms\Components\DatePicker::make('fecha_asignacion')
-                                    ->label('Fecha de Asignación')
-                                    ->disabled(),
-                            ])
-                            ->disableLabel()
-                        ]),
+                            Forms\Components\Placeholder::make('instructor_anterior')
+                                ->label('Instructor Anterior')
+                                ->content(fn ($record) => optional($record->instructorHistorial->last())->instructorSeguimiento->nombre_completo ?? 'N/A'),
+
+                            Forms\Components\Placeholder::make('fecha_asignacion_anterior')
+                                ->label('Fecha de Asignación')
+                                ->content(fn ($record) => optional($record->instructorHistorial->last())->fecha_asignacion ?? 'N/A'),
+                        ])
+                        ->hidden(fn ($record) => optional($record->instructorHistorial)->count() < 2),
+
+
 
                         Forms\Components\Section::make('Estado del Aprendiz')
                         ->icon('heroicon-o-arrows-up-down')
@@ -286,12 +282,16 @@ class AprendizResource extends Resource
                                 ->required(),
                             ]),
 
-                        // Forms\Components\Section::make('Más información')
-                        // ->icon('heroicon-o-plus-circle')
-                        //     ->schema([
-                            
-        
-                        //     ]),
+                            Forms\Components\Section::make('Aval')
+                            ->icon('heroicon-o-clipboard-document-check')
+                            ->schema([
+                                Forms\Components\Placeholder::make('fecha')
+                                    ->label('Fecha de Aval')
+                                    ->content(fn ($record) => optional($record->aval)->fecha ? \Carbon\Carbon::parse($record->aval->fecha)->format('d M Y') : 'N/A'),
+                            ])
+                            ->hidden(fn ($record) => is_null(optional($record->aval)->fecha)),
+
+                        
                     ])
                     ->columnSpan(['lg' => 1]),
 

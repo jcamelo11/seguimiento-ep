@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Mail\AsignacionInstructorMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Notifications\Notifiable;
 
 class Aprendiz extends Model
 {
-    use HasFactory;
+    use HasFactory,  Notifiable;
 
     protected $table = 'aprendices'; // Nombre de la tabla de las migraciones
 
@@ -59,9 +60,9 @@ class Aprendiz extends Model
         return $this->hasMany(InformesSeguimiento::class);
     }
 
-    public function avales(): HasMany
+    public function aval(): HasOne
     {
-        return $this->hasMany(Aval::class);
+        return $this->hasOne(Aval::class, 'aprendiz_id');
     }
 
     protected static function boot()
@@ -88,6 +89,7 @@ class Aprendiz extends Model
 
                 // Enviar correo al aprendiz sobre la asignación o reasignación
                 Mail::to($aprendiz->correo_institucional ?? $aprendiz->correo_personal)
+                    ->cc($instructor->correo_institucional)
                     ->send(new AsignacionInstructorMail($aprendiz, $instructor, $fechaAsignacion, $esReasignacion));
             }
         });

@@ -41,13 +41,15 @@ class InstructorSeguimientoResource extends Resource
                     Forms\Components\TextInput::make('apellidos')
                         ->label('Apellidos')
                         ->required(),
-                    Forms\Components\TextInput::make('correo_personal')
-                        ->label('Correo')
+                    Forms\Components\TextInput::make('correo_institucional')
+                        ->label('Correo Institucional')
                         ->email()
                         ->required(),
+                    Forms\Components\TextInput::make('correo_personal')
+                        ->label('Correo Personal')
+                        ->email(),
                     Forms\Components\TextInput::make('telefono')
-                        ->label('Número de Telefono')
-                        ->required(),
+                        ->label('Número de Telefono'),
                     Forms\Components\TextInput::make('area')
                         ->label('Area'),
                     Forms\Components\TextInput::make('profesion')

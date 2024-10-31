@@ -21,7 +21,7 @@
         }
         .logo {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
         }
         h1, h2, h3 {
             color: #39A900;
@@ -112,7 +112,8 @@
 <body>
     <div class="container">
         <div class="logo">
-            <img src="{{ asset('/images/logoo.svg') }}" alt="Logo" style="width: 30%; max-width: 150px; height: auto;" />
+            <img src="{{ asset('/images/seguimiento-logo.svg') }}" alt="Logo" style="width: 60%; max-width: 400px; height: auto;" />
+
         </div>
 
         {{-- <h2>{{ $esReasignacion ? 'Reasignación de Instructor de Seguimiento' : 'Asignación de Instructor de Seguimiento' }}</h2> --}}

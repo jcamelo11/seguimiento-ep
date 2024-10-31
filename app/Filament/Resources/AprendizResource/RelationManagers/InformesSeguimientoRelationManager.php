@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Session;
 
 
 
+
 class InformesSeguimientoRelationManager extends RelationManager
 {
     protected static string $relationship = 'informesSeguimiento';
@@ -97,15 +98,17 @@ class InformesSeguimientoRelationManager extends RelationManager
                     // Verifica que el correo exista antes de enviar
                     if ($correoDestinatario) {
                         // Enviar el correo de notificación al aprendiz
-                        Mail::to($correoDestinatario)->send(new AprendizParaCertificacion($aprendiz));
+                        Mail::to($correoDestinatario)
+                        ->cc('llinan@sena.edu.co') 
+                        ->send(new AprendizParaCertificacion($aprendiz));
 
                         // Notificación de éxito dentro de la aplicación
                         Notification::make()
                             ->title('Éxito')
                             ->body('Aval generado y correo enviado al aprendiz.')
                             ->success()
-                            ->send()
-                           ;
+                            ->send();
+                            
                     } else {
                         // Notificación de error si no hay correo disponible
                         Notification::make()
