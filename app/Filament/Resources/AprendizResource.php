@@ -16,7 +16,6 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,9 +26,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\RelationManagers\RelationManagerConfiguration;
 use App\Filament\Resources\AprendizResource\RelationManagers;
-use App\Filament\Exports\AprendizExporter;
-use Filament\Tables\Actions\ExportAction;
 use Illuminate\Database\Eloquent\Model; 
+use Filament\Tables\Actions\BulkAction;
+use App\Exports\AprendizExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Filament\Tables\Actions\Action;
 
 
 class AprendizResource extends Resource
@@ -250,7 +251,6 @@ class AprendizResource extends Resource
                                 ->preload(),
                             DatePicker::make('fecha_asignacion')
                                 ->label('Fecha de Asignación')
-                                
                         ]),
 
                         Forms\Components\Section::make('Instructor de seguimiento Anterior')
@@ -265,8 +265,6 @@ class AprendizResource extends Resource
                                 ->content(fn ($record) => optional($record->instructorHistorial->last())->fecha_asignacion ?? 'N/A'),
                         ])
                         ->hidden(fn ($record) => optional($record->instructorHistorial)->count() < 2),
-
-
 
                         Forms\Components\Section::make('Estado del Aprendiz')
                         ->icon('heroicon-o-arrows-up-down')
@@ -290,8 +288,6 @@ class AprendizResource extends Resource
                                     ->content(fn ($record) => optional($record->aval)->fecha ? \Carbon\Carbon::parse($record->aval->fecha)->format('d M Y') : 'N/A'),
                             ])
                             ->hidden(fn ($record) => is_null(optional($record->aval)->fecha)),
-
-                        
                     ])
                     ->columnSpan(['lg' => 1]),
 
@@ -407,18 +403,27 @@ class AprendizResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->headerActions([
-                ExportAction::make()
-                    ->exporter(AprendizExporter::class)
+                
+                // ExportAction::make()
+                //     ->exporter(AprendizExporter::class)
+                //     ->label('Descargar Aprendices')
+                 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    BulkAction::make('export')
+                    ->label('Exportar a Excel')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function () {
+                        return Excel::download(new AprendizExport, 'aprendices.xlsx');
+                    }),
+
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
     
-
     public static function getRelations(): array
     {
         return [
@@ -463,5 +468,4 @@ class AprendizResource extends Resource
            
         ];
     }
-
 }

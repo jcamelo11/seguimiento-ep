@@ -16,8 +16,18 @@ class ListAprendizs extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('export')
+            ->label('Exportar Aprendices')
+            ->icon('heroicon-s-document-arrow-down')
+            ->color('secondary')
+            ->action(function () {
+                // Llamar a la exportación con Maatwebsite Excel
+                return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\AprendizExport(), 'aprendices.xlsx');
+            })
+            ->requiresConfirmation(),
             Actions\CreateAction::make()
-            ->label('Nuevo Aprendiz'),
+            ->label('Nuevo Aprendiz')
+            ->icon('heroicon-s-user-plus'),
         ];
     }
 
