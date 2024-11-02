@@ -19,6 +19,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\Color;
 use App\Mail\AprendizParaCertificacion;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 
@@ -128,7 +129,10 @@ class InformesSeguimientoRelationManager extends RelationManager
                            $aprendiz->informesSeguimiento()
                                     ->where('estado_informe', '!=', 'RE - Correcto')
                                     ->doesntExist();
-                }),
+                })->requiresConfirmation()
+                ->modalHeading('¿Estás seguro de que deseas generar el aval?')
+                ->modalSubheading('Al confirmar, se enviará un correo electrónico al aprendiz notificando la aprobación de su etapa productiva y su avance al proceso de certificación.'),
+    
                 
                 Tables\Actions\Action::make('generarInformes')
                 ->icon('heroicon-s-newspaper')
@@ -184,13 +188,14 @@ class InformesSeguimientoRelationManager extends RelationManager
                                 ]);
                             }
 
-                
-            
+                            $user = auth()->user();
+
                             Notification::make()
                                 ->title('Éxito')
                                 ->body('Informes creados correctamente.')
                                 ->success()
-                                ->send();
+                                ->send()
+                                ->sendToDatabase($user);
                         } else {
                             Notification::make()
                                 ->title('Error')

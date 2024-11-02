@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Mail\AsignacionInstructorMail;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Notifications\Notifiable;
+use Filament\Notifications\Notification; 
 
 class Aprendiz extends Model
 {
@@ -70,6 +70,9 @@ class Aprendiz extends Model
         parent::boot();
     
         static::updating(function ($aprendiz) {
+
+            $esReasignacion = !is_null($aprendiz->getOriginal('instructor_seguimiento_id'));
+
             // Solo guardar el historial si instructor_seguimiento_id cambia
             if ($aprendiz->isDirty('instructor_seguimiento_id')) {
                 InstructorHistorial::create([
@@ -77,10 +80,19 @@ class Aprendiz extends Model
                     'instructor_seguimiento_id' => $aprendiz->getOriginal('instructor_seguimiento_id'),
                     'fecha_asignacion' => $aprendiz->getOriginal('fecha_asignacion'),
                 ]);
-            }
-            
-            $esReasignacion = !is_null($aprendiz->getOriginal('instructor_seguimiento_id'));
 
+                    // Determina el mensaje para la notificación
+                $mensaje = $esReasignacion 
+                ? 'El instructor ha sido reasignado al aprendiz.' 
+                : 'Se ha asignado un nuevo instructor al aprendiz.';
+
+                // Genera la notificación de Filament
+                Notification::make()
+                    ->title('Asignación de Instructor')
+                    ->body($mensaje)
+                    ->success()
+                    ->send();
+            }
             // Solo enviar correo si cambia el instructor o la fecha de asignación
             if ($aprendiz->isDirty('instructor_seguimiento_id') || $aprendiz->isDirty('fecha_asignacion')) {
                 // Obtener el nuevo instructor y la fecha de asignación
@@ -94,13 +106,4 @@ class Aprendiz extends Model
             }
         });
     }
-
-   
-
-
-
-    
-
-  
-    
 }

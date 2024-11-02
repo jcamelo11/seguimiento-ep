@@ -57,8 +57,8 @@ class ListAprendizs extends ListRecords
             ->action(function () {
                 // Llamar a la exportación con Maatwebsite Excel
                 return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\AprendizExport(), 'Cuadro de Seguimiento EP.xlsx');
-            })
-            ->requiresConfirmation(),
+            }),
+            
             Actions\CreateAction::make()
             ->label('Nuevo Aprendiz')
             ->icon('heroicon-s-user-plus'),

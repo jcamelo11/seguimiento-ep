@@ -128,7 +128,9 @@ class AprendizResource extends Resource
                                         TextInput::make('ficha')
                                             ->label('Ficha')
                                             ->required(),
-                                        
+                                        TextInput::make('nombre_programa')
+                                            ->label('Programa de Formación')
+                                            ->required(),
                                         Select::make('nivel_formacion')
                                             ->label('Nivel de Formacion')
                                             ->options([
