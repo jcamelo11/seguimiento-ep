@@ -34,7 +34,9 @@ class AdminPanelProvider extends PanelProvider
             ->profile()
             ->colors([
                 'primary' => Color::hex('#39A900'),
-                'secondary' => Color::hex('#04324d'),
+                'secondary' => Color::hex('#00324D'),
+                'tertiary' => Color::hex('#3CB5CC'),
+               
             ])
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

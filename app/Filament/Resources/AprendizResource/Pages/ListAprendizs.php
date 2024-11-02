@@ -4,9 +4,15 @@ namespace App\Filament\Resources\AprendizResource\Pages;
 
 use App\Filament\Resources\AprendizResource;
 use App\Models\Aprendiz;
+use Filament\Forms\Components\FileUpload;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Components\Tab;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification; 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\AprendizImport;
 
 
 class ListAprendizs extends ListRecords
@@ -16,13 +22,41 @@ class ListAprendizs extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('AprendizImport')
+            ->label('Importar')
+            ->icon('heroicon-s-document-arrow-up')
+            ->color('tertiary')
+            ->form([
+                FileUpload::make('attachment'),
+            ])
+            ->action(function(array $data) {
+                try {
+                    $file = public_path('storage/' . $data['attachment']);
+            
+                    Excel::import(new AprendizImport, $file);
+            
+                    Notification::make()
+                        ->title('Éxito')
+                        ->body('Los aprendices han sido importados correctamente')
+                        ->success()
+                        ->send();
+                } catch (\Exception $e) {
+                    Notification::make()
+                        ->title('Error')
+                        ->body('No se pudieron importar los aprendices: ' . $e->getMessage())
+                        ->danger()
+                        ->send();
+                }
+            }),
+            
+
             Actions\Action::make('export')
-            ->label('Exportar Aprendices')
+            ->label('Exportar')
             ->icon('heroicon-s-document-arrow-down')
             ->color('secondary')
             ->action(function () {
                 // Llamar a la exportación con Maatwebsite Excel
-                return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\AprendizExport(), 'aprendices.xlsx');
+                return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\AprendizExport(), 'Cuadro de Seguimiento EP.xlsx');
             })
             ->requiresConfirmation(),
             Actions\CreateAction::make()
