@@ -344,11 +344,12 @@ class AprendizResource extends Resource
                     ->sortable()
                     ->toggleable()
                     ->colors([
-                        'warning' => 'CONTRETO DE APRENDIZAJE',
+                        'warning' => 'CONTRATO DE APRENDIZAJE',
                         'info' => function ($state) {
                             return in_array($state, [
-                                'MONITORIAS', 
-                                'PASANTIA - APOYO A UNA UNIDAD PRODUCTIVA FAMILIAR', 
+                                'MONITORIAS',
+                                'PASANTIA', 
+                                'PASANTIA - APOYO A UNIDAD PRODUCTIVA FAMILIAR',
                                 'PASANTIA - APOYO INSTITUCION ESTATAL, MUNIC, VERED, ONG', 
                                 'PASANTIA - DE ASESORIA A PYMES', 
                                 'PROYECTO PRODUCTIVO', 

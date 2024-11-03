@@ -25,9 +25,10 @@ class EtapaProductivaRelationManager extends RelationManager
                 Forms\Components\Select::make('modalidad_etapa')
                     ->label('Modalidad de Etapa Productiva')
                     ->options([
-                        'CONTRETO DE APRENDIZAJE' => 'CONTRETO APRENDIZAJE',
+                        'CONTRATO DE APRENDIZAJE ' => 'CONTRATO DE APRENDIZAJE ',
                         'MONITORIAS' => 'MONITORIAS',
-                        'PASANTIA - APOYO A UNA UNIDAD PRODUCTIVA FAMILIAR' => 'PASANTIA - APOYO A UNA UNIDAD PRODUCTIVA FAMILIAR',
+                        'PASANTIA', 
+                        'PASANTIA - APOYO A UNIDAD PRODUCTIVA FAMILIAR' =>  'PASANTIA - APOYO A UNIDAD PRODUCTIVA FAMILIAR',
                         'PASANTIA - APOYO INSTITUCION ESTATAL, MUNIC, VERED, ONG' => 'PASANTIA - APOYO INSTITUCION ESTATAL, MUNIC, VERED, ONG',
                         'PASANTIA - DE ASESORIA A PYMES' => 'PASANTIA - DE ASESORIA A PYMES',
                         'PROYECTO PRODUCTIVO' => 'PROYECTO PRODUCTIVO',
@@ -71,11 +72,12 @@ class EtapaProductivaRelationManager extends RelationManager
                 Tables\Columns\BadgeColumn::make('modalidad_etapa')
                 ->label('Modalidad')
                     ->colors([
-                        'warning' => 'CONTRETO DE APRENDIZAJE',
+                        'warning' => 'CONTRATO DE APRENDIZAJE ',
                         'info' => function ($state) {
                             return in_array($state, [
-                                'MONITORIAS', 
-                                'PASANTIA - APOYO A UNA UNIDAD PRODUCTIVA FAMILIAR', 
+                                'MONITORIAS',
+                                'PASANTIA',
+                                'PASANTIA - APOYO A UNIDAD PRODUCTIVA FAMILIAR', 
                                 'PASANTIA - APOYO INSTITUCION ESTATAL, MUNIC, VERED, ONG', 
                                 'PASANTIA - DE ASESORIA A PYMES', 
                                 'PROYECTO PRODUCTIVO', 
