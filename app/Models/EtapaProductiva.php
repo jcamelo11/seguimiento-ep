@@ -19,7 +19,6 @@ class EtapaProductiva extends Model
         'fecha_final_prorroga',
         'empresa',
         'ciudad_practica',
-        'estado_etapa_productiva',
         'etapa_de_la_practica',
         'patrocinio',
         'aprendiz_id',

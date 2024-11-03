@@ -69,10 +69,14 @@ class ListAprendizs extends ListRecords
     {
         return [
             null => Tab::make('All')->badge($this->aprendicesPorEstado() ?? 0)->label('Total Aprendices'),
-            'Activo' => Tab::make()->query(fn ($query) => $query->where('estado', 'Activo'))->badge($this->aprendicesPorEstado('Activo') ?? 0)->badgeColor('info'),
-            'Por Certificar' => Tab::make()->query(fn ($query) => $query->where('estado', 'Por Certificar'))->badge($this->aprendicesPorEstado('Por Certificar') ?? 0)->badgeColor('warning'),
-            'Certificado' => Tab::make()->query(fn ($query) => $query->where('estado', 'Certificado'))->badge($this->aprendicesPorEstado('Certificado') ?? 0),
-            'Cancelado/Retirado' => Tab::make()->query(fn ($query) => $query->where('estado', 'Cancelado/Retirado'))->badge($this->aprendicesPorEstado('Cancelado/Retirado') ?? 0)->badgeColor('danger'),
+
+            'Activo' => Tab::make()->query(fn ($query) => $query->where('estado', 'ACTIVO'))->badge($this->aprendicesPorEstado('ACTIVO') ?? 0)->badgeColor('info'),
+
+            'Por Certificar' => Tab::make()->query(fn ($query) => $query->where('estado', 'POR CERTIFICAR'))->badge($this->aprendicesPorEstado('POR CERTIFICAR') ?? 0)->badgeColor('warning'),
+
+            'Certificado' => Tab::make()->query(fn ($query) => $query->where('estado', 'CERTIFICADO'))->badge($this->aprendicesPorEstado('CERTIFICADO') ?? 0),
+            
+            'Cancelado/Retirado' => Tab::make()->query(fn ($query) => $query->where('estado', 'CANCELADO/RETIRADO'))->badge($this->aprendicesPorEstado('CANCELADO/RETIRADO') ?? 0)->badgeColor('danger'),
         ];
     }
 

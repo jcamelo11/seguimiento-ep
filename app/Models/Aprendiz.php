@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Mail\AsignacionInstructorMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Notifications\Notifiable;
 use Filament\Notifications\Notification; 
 
 class Aprendiz extends Model
@@ -91,8 +92,14 @@ class Aprendiz extends Model
                     ->title('Asignación de Instructor')
                     ->body($mensaje)
                     ->success()
+                    ->duration(10000)
                     ->send();
+
             }
+            
+
+          
+
             // Solo enviar correo si cambia el instructor o la fecha de asignación
             if ($aprendiz->isDirty('instructor_seguimiento_id') || $aprendiz->isDirty('fecha_asignacion')) {
                 // Obtener el nuevo instructor y la fecha de asignación
@@ -106,4 +113,13 @@ class Aprendiz extends Model
             }
         });
     }
+
+   
+
+
+
+    
+
+  
+    
 }

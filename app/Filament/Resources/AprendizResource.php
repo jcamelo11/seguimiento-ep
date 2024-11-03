@@ -134,17 +134,17 @@ class AprendizResource extends Resource
                                         Select::make('nivel_formacion')
                                             ->label('Nivel de Formacion')
                                             ->options([
-                                                'Tecnologo' => 'Tecnologo',
-                                                'Tecnico' => 'Tecnico',
-                                                'Auxilar' => 'Auxilar',
-                                                'Operativo' => 'Operativo',
+                                                'TECNOLOGO' => 'TECNOLOGO',
+                                                'TECNICO' => 'TECNICO',
+                                                'AUXILIAR' => 'AUXILIAR',
+                                                'OPERARIO' => 'OPERARIO',
                                             ])
                                             ->required(),
                                         Select::make('modalidad')
                                             ->label('Modalidad')
                                             ->options([
-                                                'Presencial' => 'Presencial',
-                                                'Virtual' => 'Virtual',
+                                                'PRESENCIAL' => 'PRESENCIAL',
+                                                'VIRTUAL' => 'VIRTUAL',
                                             ])
                                             ->required(),
                                         TextInput::make('municipio_ficha')
@@ -187,16 +187,9 @@ class AprendizResource extends Resource
                             ->disabled()
                             ->required()
                             ->reactive(),
-                        Select::make('nivel_formacion')
+                        TextInput::make('nivel_formacion')
                             ->label('Nivel de Formacion')
                             ->disabled()
-                            ->options([
-                                'Tecnologo' => 'Tecnologo',
-                                'Tecnico' => 'Tecnico',
-                                'Auxilar' => 'Auxilar',
-                                'Operativo' => 'Operativo',
-                            ])
-                            ->required()
                             ->reactive(),
 
                         TextInput::make('modalidad')
@@ -208,19 +201,17 @@ class AprendizResource extends Resource
                         TextInput::make('municipio_ficha')
                             ->label('Municipio de la Ficha')
                             ->disabled()
-                            ->required()
+                            
                             ->reactive(),
 
                         TextInput::make('lider_programa')
                             ->label('Líder del Programa')
                             ->disabled()
-                            ->required()
                             ->reactive(),
 
                         DatePicker::make('fecha_final')
                             ->label('Fecha Final Etapa Lectiva')
                             ->disabled()
-                            ->required()
                             ->reactive(),
                     ])
                     ->columns(2)
@@ -274,10 +265,10 @@ class AprendizResource extends Resource
                                 Forms\Components\Select::make('estado')
                                 ->label('Estado')
                                 ->options([
-                                    'Activo' => 'Activo',
-                                    'Por Certificar' => 'Por Certificar',
-                                    'Certificado' => 'Certificado',
-                                    'Cancelado/Retirado' => 'Cancelado/Retirado',
+                                    'ACTIVO' => 'ACTIVO',
+                                    'POR CERTIFICAR' => 'POR CERTIFICAR',
+                                    'CERTIFICADO' => 'CERTIFICADO',
+                                    'CANCELADO/RETIRADO' => 'CANCELADO/RETIRADO',
                                 ])
                                 ->required(),
                             ]),
@@ -312,16 +303,16 @@ class AprendizResource extends Resource
                 ->label('Estado')
                 ->colors([
                     'primary',
-                    'info' => 'Activo',
-                    'warning' => 'Por Certificar',
-                    'success' => 'Certificado',
-                    'danger' => 'Cancelado/Retirado',
+                    'info' => 'ACTIVO',
+                    'warning' => 'POR CERTIFICAR',
+                    'success' => 'CERTIFICADO',
+                    'danger' => 'CANCELADO/RETIRADO',
                 ])
                 ->icons([
-                    'heroicon-s-sparkles' => 'Activo',
-                    'heroicon-s-document-text' => 'Por Certificar',
-                    'heroicon-s-check-badge' => 'Certificado',
-                    'heroicon-s-x-circle' => 'Cancelado/Retirado',
+                    'heroicon-s-sparkles' => 'ACTIVO',
+                    'heroicon-s-document-text' => 'POR CERTIFICAR',
+                    'heroicon-s-check-badge' => 'CERTIFICADO',
+                    'heroicon-s-x-circle' => 'CANCELADO/RETIRADO',
                 ])
                 ->sortable(),
                 TextColumn::make('tipo_documento')
