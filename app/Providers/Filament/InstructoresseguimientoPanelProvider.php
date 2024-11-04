@@ -17,6 +17,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 
 class InstructoresseguimientoPanelProvider extends PanelProvider
 {
@@ -24,7 +25,7 @@ class InstructoresseguimientoPanelProvider extends PanelProvider
     {
         return $panel
             ->id('instructoresseguimiento')
-            ->path('instructoresseguimiento')
+            ->path('instructorseguimiento')
             ->login()
             ->profile()
             ->colors([
@@ -34,6 +35,10 @@ class InstructoresseguimientoPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Instructoresseguimiento/Pages'), for: 'App\\Filament\\Instructoresseguimiento\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+            ])
+            ->resources([
+                \App\Filament\Resources\AprendizResource::class,
+                // otros resources para el panel del instructor
             ])
             ->discoverWidgets(in: app_path('Filament/Instructoresseguimiento/Widgets'), for: 'App\\Filament\\Instructoresseguimiento\\Widgets')
             ->widgets([
@@ -53,6 +58,14 @@ class InstructoresseguimientoPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->plugins([
+                GlobalSearchModalPlugin::make()
+            ])
+            ->brandName('Seguimiento - EP')
+            ->brandLogo(asset('images/seguimiento-logo.svg'))
+            ->darkModeBrandLogo(asset('images/seguimiento-logo-negativo.svg'))
+            ->brandLogoHeight('5.9rem')
+            ->spa();
     }
 }
