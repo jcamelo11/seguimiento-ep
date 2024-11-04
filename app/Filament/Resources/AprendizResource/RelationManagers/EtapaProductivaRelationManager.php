@@ -25,7 +25,7 @@ class EtapaProductivaRelationManager extends RelationManager
                 Forms\Components\Select::make('modalidad_etapa')
                     ->label('Modalidad de Etapa Productiva')
                     ->options([
-                        'CONTRATO DE APRENDIZAJE ' => 'CONTRATO DE APRENDIZAJE ',
+                        'CONTRATO DE APRENDIZAJE' => 'CONTRATO DE APRENDIZAJE',
                         'MONITORIAS' => 'MONITORIAS',
                         'PASANTIA', 
                         'PASANTIA - APOYO A UNIDAD PRODUCTIVA FAMILIAR' =>  'PASANTIA - APOYO A UNIDAD PRODUCTIVA FAMILIAR',
@@ -72,7 +72,7 @@ class EtapaProductivaRelationManager extends RelationManager
                 Tables\Columns\BadgeColumn::make('modalidad_etapa')
                 ->label('Modalidad')
                     ->colors([
-                        'warning' => 'CONTRATO DE APRENDIZAJE ',
+                        'warning' => 'CONTRATO DE APRENDIZAJE',
                         'info' => function ($state) {
                             return in_array($state, [
                                 'MONITORIAS',

@@ -9,7 +9,6 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Navigation\NavigationItem;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -18,37 +17,28 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use App\Filament\Resources\InstructorseguimientoResource\Pages\InstructorSeguimientoEstado;
-use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 
-
-class AdminPanelProvider extends PanelProvider
+class InstructoresseguimientoPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id('instructoresseguimiento')
+            ->path('instructoresseguimiento')
             ->login()
             ->profile()
             ->colors([
-                'primary' => Color::hex('#39A900'),
-                'secondary' => Color::hex('#00324D'),
-                'tertiary' => Color::hex('#3CB5CC'),
-               
+                'primary' => Color::hex('#3CB5CC'),
             ])
-            ->databaseNotifications()
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverResources(in: app_path('Filament/Instructoresseguimiento/Resources'), for: 'App\\Filament\\Instructoresseguimiento\\Resources')
+            ->discoverPages(in: app_path('Filament/Instructoresseguimiento/Pages'), for: 'App\\Filament\\Instructoresseguimiento\\Pages')
             ->pages([
                 Pages\Dashboard::class,
-                InstructorSeguimientoEstado::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Instructoresseguimiento/Widgets'), for: 'App\\Filament\\Instructoresseguimiento\\Widgets')
             ->widgets([
-                
-                
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -63,17 +53,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            
-            ->plugins([
-                GlobalSearchModalPlugin::make()
-            ])
-            ->brandName('Seguimiento - EP')
-            ->brandLogo(asset('images/seguimiento-logo.svg'))
-            ->darkModeBrandLogo(asset('images/seguimiento-logo-negativo.svg'))
-            ->brandLogoHeight('5.9rem')
-            ->spa();
-            //->font('Roboto');
-            
+            ]);
     }
 }

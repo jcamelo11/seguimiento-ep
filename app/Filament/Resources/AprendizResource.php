@@ -84,8 +84,8 @@ class AprendizResource extends Resource
                         Forms\Components\Select::make('genero')
                             ->label('Género')
                             ->options([
-                                'Masculino' => 'Masculino',
-                                'Femenino' => 'Femenino',
+                                'M' => 'Masculino',
+                                'F' => 'Femenino',
                                 'Otro' => 'Otro',
                             ])
                             ->required(),
@@ -251,13 +251,18 @@ class AprendizResource extends Resource
                         ->schema([
                             Forms\Components\Placeholder::make('instructor_anterior')
                                 ->label('Instructor Anterior')
-                                ->content(fn ($record) => optional($record->instructorHistorial->last())->instructorSeguimiento->nombre_completo ?? 'N/A'),
+                                ->content(fn ($record) => $record?->instructorHistorial && $record->instructorHistorial->isNotEmpty()
+                                    ? optional($record->instructorHistorial->last()->instructorSeguimiento)->nombre_completo
+                                    : 'N/A'),
 
                             Forms\Components\Placeholder::make('fecha_asignacion_anterior')
                                 ->label('Fecha de Asignación')
-                                ->content(fn ($record) => optional($record->instructorHistorial->last())->fecha_asignacion ?? 'N/A'),
+                                ->content(fn ($record) => $record?->instructorHistorial && $record->instructorHistorial->isNotEmpty()
+                                    ? $record->instructorHistorial->last()->fecha_asignacion
+                                    : 'N/A'),
                         ])
-                        ->hidden(fn ($record) => optional($record->instructorHistorial)->count() < 2),
+                        ->hidden(fn ($record) => !$record?->instructorHistorial || $record->instructorHistorial->count() < 2),
+
 
                         Forms\Components\Section::make('Estado del Aprendiz')
                         ->icon('heroicon-o-arrows-up-down')
@@ -278,9 +283,12 @@ class AprendizResource extends Resource
                             ->schema([
                                 Forms\Components\Placeholder::make('fecha')
                                     ->label('Fecha de Aval')
-                                    ->content(fn ($record) => optional($record->aval)->fecha ? \Carbon\Carbon::parse($record->aval->fecha)->format('d M Y') : 'N/A'),
+                                    ->content(fn ($record) => $record?->aval?->fecha 
+                                        ? \Carbon\Carbon::parse($record->aval->fecha)->format('d M Y')
+                                        : 'N/A'),
                             ])
-                            ->hidden(fn ($record) => is_null(optional($record->aval)->fecha)),
+                            ->hidden(fn ($record) => is_null($record?->aval?->fecha)),
+                        
                     ])
                     ->columnSpan(['lg' => 1]),
 

@@ -33,4 +33,9 @@ class InstructorSeguimiento extends Model
         return "{$this->nombres} {$this->apellidos}";
     }
 
+    public function user() 
+    { 
+        return $this->belongsTo(User::class);
+    }
+
 }

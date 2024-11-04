@@ -81,7 +81,7 @@ class InstructorSeguimientoResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
-                TextColumn::make('correo_personal')
+                TextColumn::make('correo_institucional')
                     ->label('Correo Electrónico')
                     ->searchable()
                     ->sortable()
