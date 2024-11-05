@@ -61,10 +61,17 @@ class Aprendiz extends Model
         return $this->hasMany(InformesSeguimiento::class);
     }
 
+    public function scopeAssignedToInstructor(Builder $query, $userId) 
+    { 
+        return $query->where('instructor_seguimiento_id', $userId);        
+    }
+
     public function aval(): HasOne
     {
         return $this->hasOne(Aval::class, 'aprendiz_id');
     }
+
+    
 
     protected static function boot()
     {
@@ -94,12 +101,7 @@ class Aprendiz extends Model
                     ->success()
                     ->duration(10000)
                     ->send();
-
             }
-            
-
-          
-
             // Solo enviar correo si cambia el instructor o la fecha de asignación
             if ($aprendiz->isDirty('instructor_seguimiento_id') || $aprendiz->isDirty('fecha_asignacion')) {
                 // Obtener el nuevo instructor y la fecha de asignación

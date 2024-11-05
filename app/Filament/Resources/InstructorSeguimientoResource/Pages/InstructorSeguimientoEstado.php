@@ -19,7 +19,7 @@ class InstructorSeguimientoEstado extends Page
     protected static ?string $navigationGroup = 'Instructores X Estado';
     protected static ?string $navigationLabel = 'Instructores X Estado';
     protected static ?string $title = 'Instructores X Estado';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = -1;
 
 
 

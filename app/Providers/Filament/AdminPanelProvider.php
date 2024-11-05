@@ -66,7 +66,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             
             ->plugins([
-                GlobalSearchModalPlugin::make()
+                GlobalSearchModalPlugin::make(),
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
             ])
             ->brandName('Seguimiento - EP')
             ->brandLogo(asset('images/seguimiento-logo.svg'))

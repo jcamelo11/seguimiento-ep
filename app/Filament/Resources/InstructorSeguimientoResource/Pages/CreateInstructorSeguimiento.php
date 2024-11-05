@@ -12,14 +12,22 @@ class CreateInstructorSeguimiento extends CreateRecord
 {
     protected static string $resource = InstructorSeguimientoResource::class;
 
-    protected function afterCreate() { 
-        $instructor = $this->record; 
+    protected function afterCreate()
+    { 
+        $instructor = $this->record;
+    
+        // Crear un usuario para el instructor
         $user = User::create([ 
             'name' => $instructor->nombres . ' ' . $instructor->apellidos,
             'email' => $instructor->correo_institucional, 
             'password' => Hash::make('password_secreta'), 
-        ]); // Asignar el usuario al instructor $instructor->user()->associate($user); $instructor->save(); }
+        ]);
+    
+        // Asociar el usuario al instructor
+        $instructor->user_id = $user->id;
+        $instructor->save();
     }
+    
 
     protected function getRedirectUrl(): string
     {

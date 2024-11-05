@@ -21,9 +21,7 @@ use App\Mail\AprendizParaCertificacion;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-
-
-
+use Illuminate\Support\Facades\Gate;
 
 class InformesSeguimientoRelationManager extends RelationManager
 {
@@ -47,9 +45,6 @@ class InformesSeguimientoRelationManager extends RelationManager
                     'RE - Correcto' => 'RE - Correcto',
                 ]),
                 MarkdownEditor::make('observaciones')->columnSpan('full'),
-                
-        
-               
             ]);
     }
 
@@ -75,7 +70,6 @@ class InformesSeguimientoRelationManager extends RelationManager
                         'heroicon-s-x-circle' => 'RE - Errores',
                         'heroicon-s-check-circle' => 'RE - Correcto',
                     ]),
-                
             ])
             ->filters([
                 //
@@ -125,10 +119,7 @@ class InformesSeguimientoRelationManager extends RelationManager
                     $aprendiz = $this->getOwnerRecord();
                     
                     // Verificar que existen informes y que todos estén en 'RE - Correcto'
-                    return $aprendiz->informesSeguimiento()->exists() &&
-                           $aprendiz->informesSeguimiento()
-                                    ->where('estado_informe', '!=', 'RE - Correcto')
-                                    ->doesntExist();
+                    return Gate::allows('generar_aval_aprendiz') && $aprendiz->informesSeguimiento()->exists() && $aprendiz->informesSeguimiento() ->where('estado_informe', '!=', 'RE - Correcto') ->doesntExist();
                 })->requiresConfirmation()
                 ->modalHeading('¿Estás seguro de que deseas generar el aval?')
                 ->modalSubheading('Al confirmar, se enviará un correo electrónico al aprendiz notificando la aprobación de su etapa productiva y su avance al proceso de certificación.'),
@@ -136,7 +127,9 @@ class InformesSeguimientoRelationManager extends RelationManager
                 
                 Tables\Actions\Action::make('generarInformes')
                 ->icon('heroicon-s-newspaper')
-                ->visible(! $this->ownerRecord->informesSeguimiento()->exists())
+                ->visible(function () { $aprendiz = $this->ownerRecord; 
+                    return Gate::allows('generar_informes_aprendiz') && ! $aprendiz->informesSeguimiento()->exists();
+                })
                 ->action(function ($data) {
                     $parentRecord = $this->getOwnerRecord();
             

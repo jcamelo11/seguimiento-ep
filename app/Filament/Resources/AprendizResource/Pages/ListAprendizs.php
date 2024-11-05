@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification; 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\AprendizImport;
+use Illuminate\Support\Facades\Gate;
 
 
 class ListAprendizs extends ListRecords
@@ -47,7 +48,7 @@ class ListAprendizs extends ListRecords
                         ->danger()
                         ->send();
                 }
-            }),
+            })->visible(fn () => Gate::allows('importar_aprendiz')),
             
 
             Actions\Action::make('export')
@@ -57,7 +58,7 @@ class ListAprendizs extends ListRecords
             ->action(function () {
                 // Llamar a la exportación con Maatwebsite Excel
                 return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\AprendizExport(), 'Cuadro de Seguimiento EP.xlsx');
-            }),
+            })->visible(fn () => Gate::allows('exportar_aprendiz')),
             
             Actions\CreateAction::make()
             ->label('Nuevo Aprendiz')

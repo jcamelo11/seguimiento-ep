@@ -31,9 +31,10 @@ use Filament\Tables\Actions\BulkAction;
 use App\Exports\AprendizExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Tables\Actions\Action;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use Illuminate\Support\Facades\Auth;
 
-
-class AprendizResource extends Resource
+class AprendizResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Aprendiz::class;
     protected static ?string $recordTitleAttribute = 'nombres';
@@ -42,6 +43,23 @@ class AprendizResource extends Resource
     protected static ?string $pluralLabel = 'Aprendices';
     protected static ?string $slug = 'aprendices';
 
+    
+    public static function getTableQuery(): Builder
+    {
+        // Obtener el usuario actual
+        $user = Auth::user();
+        
+        // Obtener la consulta inicial del modelo
+        $query = static::getModel()::query();
+
+        // Aplicar la condición si el usuario tiene el permiso
+        if ($user && $user->can('ver_aprendices_asignados') && $user->instructorSeguimiento) {
+            $query->where('instructor_seguimiento_id', $user->instructorSeguimiento->id);
+        }
+
+        return $query;
+    }
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -379,6 +397,7 @@ class AprendizResource extends Resource
                 
             ])
             ->filters([
+                //Tables\Filters\Filter::make('assigned') ->query(function ($query) { $user = Auth::user(); if ($user && $user->instructorSeguimiento) { return $query->where('instructor_seguimiento_id', $user->instructorSeguimiento->id); } return $query; }) ->label('Mis Aprendices') ->default(),
                 Tables\Filters\SelectFilter::make('estado')
                 ->label('Estado')
                 ->options([
@@ -446,6 +465,18 @@ class AprendizResource extends Resource
         ];
     }
 
+    // public static function query(): Builder
+    // {
+    //     $user = Auth::user();
+
+    //     // Verifica si el usuario tiene un InstructorSeguimiento asociado
+    //     if ($user && $user->instructorSeguimiento) {
+    //         return parent::query()->where('instructor_seguimiento_id', $user->instructorSeguimiento->id);
+    //     }
+
+    //     return parent::query()->whereNull('instructor_seguimiento_id');
+    // }
+
     public static function getNavigationBadge(): ?string
     {
         return (string) Aprendiz::count();
@@ -468,6 +499,23 @@ class AprendizResource extends Resource
             $record->tipo_documento => $record->numero_documento,
             'Ficha' => $record->programaFormacion->ficha ?? 'No asignado',
            
+        ];
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'exportar',
+            'importar',
+            'generar_informes',
+            'generar_aval',
+            'ver_aprendices_asignados'
         ];
     }
 }
