@@ -1,4 +1,4 @@
-<x-filament::page>
+<x-filament-panels::page>
     <p class="text-emerald-100 dark:text-emerald-200">
         Esta tabla muestra un resumen detallado de los instructores y el estado de sus aprendices asignados. 
         Proporciona una visión general de la distribución de aprendices en diferentes etapas del proceso de formación.
@@ -46,4 +46,4 @@
             </table>
         </div>
     </div>
-</x-filament::page>
+</x-filament-panels::page>

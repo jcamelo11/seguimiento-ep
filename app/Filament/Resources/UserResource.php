@@ -12,6 +12,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rules\Password;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserResource extends Resource
 {
@@ -19,34 +23,72 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $navigationGroup = 'Usuarios';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = -1;
     
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\Section::make('Detalles del usuarios')
+                ->schema([
+                    TextInput::make('name')
+                    ->label('Nombre')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password_confirmation') 
-                    ->password() 
-                    ->required() 
-                    ->same('password')
-                    ->maxLength(255),
-                Forms\Components\Select::make('roles')
-                    ->relationship('roles', 'name')
-                    ->multiple()
-                    ->preload()
-                    ->searchable()
+
+                    TextInput::make('email')
+                        ->label('Email')
+                        ->email()
+                        ->required()
+                        ->unique(User::class, 'email')
+                        ->maxLength(255),
+
+                    // Para la creación del usuario, el campo de contraseña es obligatorio
+                    TextInput::make('password')
+                        ->label('Contraseña')
+                        ->password()
+                        ->required(fn ($livewire) => $livewire instanceof Pages\CreateUser)
+                        ->minLength(8)
+                        ->maxLength(255)
+                        ->revealable()
+                        ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
+                        ->visibleOn('create')
+                        ->validationAttribute('password'),
+
+                    Forms\Components\Select::make('roles')
+                        ->relationship('roles', 'name')
+                        ->multiple()
+                        ->preload()
+                        ->searchable()
+                ])->columns(2),
+
+                Forms\Components\Section::make('Nueva contraseña')
+                    ->schema([
+                        // En el modo de edición, el campo de contraseña es opcional y permite confirmación
+                        TextInput::make('new_password')
+                            ->label('Nueva contraseña')
+                            ->password()
+                            ->nullable()
+                            ->minLength(8)
+                            ->maxLength(255)
+                            ->revealable()
+                            ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
+                            ->visibleOn('edit')
+                            ->same('new_password_confirmation')
+                            ->validationAttribute('new password'),
+
+                        TextInput::make('new_password_confirmation')
+                            ->label('Confirmar contraseña')
+                            ->password()
+                            ->nullable()
+                            ->revealable()
+                            ->minLength(8)
+                            ->maxLength(255)
+                            ->visibleOn('edit')
+                            ->validationAttribute('new password confirmation'),
+                    ])->visibleOn('edit')
+                    ->columns(2),
             ]);
     }
 
@@ -54,19 +96,20 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                    
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
-                   
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ,
             ])
             ->filters([
                 //

@@ -20,6 +20,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Resources\InstructorseguimientoResource\Pages\InstructorSeguimientoEstado;
 use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
+use App\Filament\Pages\InstrutorPorEstado; 
 
 
 class AdminPanelProvider extends PanelProvider
@@ -43,7 +44,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
-                InstructorSeguimientoEstado::class,
+                InstrutorPorEstado::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
