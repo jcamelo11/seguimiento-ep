@@ -140,7 +140,7 @@ class InstructorSeguimientoResource extends Resource
             'index' => Pages\ListInstructorSeguimientos::route('/'),
             'create' => Pages\CreateInstructorSeguimiento::route('/create'),
             'edit' => Pages\EditInstructorSeguimiento::route('/{record}/edit'),
-            'seguimiento-estado' => Pages\InstructorSeguimientoEstado::route('/estado'),
+            
         ];
     }
 

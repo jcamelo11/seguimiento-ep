@@ -37,6 +37,7 @@ class AprendizImport implements ToModel, WithHeadingRow, WithValidation
             'correo_personal' => $row['correo_personal'] ?? null,
             'correo_institucional' => $row['correo_institucional'] ?? null,
             'estado' => $row['estado'] ?? null,
+            'genero' => $row['genero'] ?? null,
             'programa_formacion_id' => $programaFormacion->id,
         ]);
 

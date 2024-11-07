@@ -40,7 +40,7 @@ class InformesSeguimientoRelationManager extends RelationManager
                 Forms\Components\Select::make('estado_informe')
                 ->label('Estado Informe')
                 ->options([
-                    'Sin Revision' => 'Sin Revision',
+                    'Sin Revision' => 'Sin Revisión',
                     'RE - Errores' => 'RE - Errores',
                     'RE - Correcto' => 'RE - Correcto',
                 ]),
@@ -53,20 +53,23 @@ class InformesSeguimientoRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('nombre')
             ->columns([
-                TextColumn::make('nombre')->label('Nombre'),
-                TextColumn::make('fecha_inicio')->label('Fecha de Inicio')
-                ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('d M Y')),
-                TextColumn::make('fecha_entrega')->label('Fecha de Entrega')
-                ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('d M Y')),
+                TextColumn::make('nombre')
+                    ->label('Nombre'),
+                TextColumn::make('fecha_inicio') 
+                    ->label('Fecha de Inicio') 
+                    ->formatStateUsing(fn ($state) => $state ? Carbon::parse($state)->format('d M Y') : 'N/A'), 
+                TextColumn::make('fecha_entrega') 
+                    ->label('Fecha de Entrega') 
+                    ->formatStateUsing(fn ($state) => $state ? Carbon::parse($state)->format('d M Y') : 'N/A'),
                 BadgeColumn::make('estado_informe') 
                     ->label('Estado')
                     ->colors([
-                        'warning' => 'Sin Revision',
+                        'warning' => 'Sin Revisión',
                         'danger' => 'RE - Errores',
                         'success' => 'RE - Correcto',
                     ])
                     ->icons([
-                        'heroicon-s-eye' => 'Sin Revision',
+                        'heroicon-s-eye' => 'Sin Revisión',
                         'heroicon-s-x-circle' => 'RE - Errores',
                         'heroicon-s-check-circle' => 'RE - Correcto',
                     ]),
@@ -145,22 +148,21 @@ class InformesSeguimientoRelationManager extends RelationManager
                                 'nombre' => 'Form 023 - 01 - Concertación',
                                 'fecha_inicio' => null,
                                 'fecha_entrega' => null,
-                                'estado_informe' => 'Sin Revision',
+                                'estado_informe' => 'Sin Revisión',
                             ]);
-                            
-                    
+
                             $parentRecord->informesSeguimiento()->create([
                                 'nombre' => 'Form 023 - 02 - Parcial',
                                 'fecha_inicio' => $etapaProductivaFechaInicio,
                                 'fecha_entrega' => $informeParcialFechaEntrega,
-                                'estado_informe' => 'Sin Revision',
+                                'estado_informe' => 'Sin Revisión',
                             ]);
             
                             $parentRecord->informesSeguimiento()->create([
                                 'nombre' => 'Form 023 - 02 - Final',
                                 'fecha_inicio' => $etapaProductivaFechaInicio,
                                 'fecha_entrega' => $etapaProductivaFechaFinal,
-                                'estado_informe' => 'Sin Revision',
+                                'estado_informe' => 'Sin Revisión',
                             ]);
 
                             // Crear las Bitácoras
@@ -169,26 +171,18 @@ class InformesSeguimientoRelationManager extends RelationManager
                                 $fechaInicioBitacora = $etapaProductivaFechaInicio->copy()->addDays($i * 15);
                                 $fechaEntregaBitacora = ($i == 11) ? $etapaProductivaFechaFinal : $fechaInicioBitacora->copy()->addDays(14);
 
-                   
-
-                    
-
                                 $parentRecord->informesSeguimiento()->create([
                                     'nombre' => $nombreBitacora,
                                     'fecha_inicio' => $fechaInicioBitacora,
                                     'fecha_entrega' => $fechaEntregaBitacora,
-                                    'estado_informe' => 'Sin Revision',
+                                    'estado_informe' => 'Sin Revisión',
                                 ]);
                             }
-
-                            $user = auth()->user();
-
                             Notification::make()
                                 ->title('Éxito')
                                 ->body('Informes creados correctamente.')
                                 ->success()
-                                ->send()
-                                ->sendToDatabase($user);
+                                ->send();
                         } else {
                             Notification::make()
                                 ->title('Error')

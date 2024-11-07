@@ -61,16 +61,16 @@ class AprendicesRelationManager extends RelationManager
                     ->label('Estado')
                     ->colors([
                         'primary',
-                        'info' => 'Activo',
-                        'warning' => 'Por Certificar',
-                        'success' => 'Certificado',
-                        'danger' => 'Cancelado/Retirado',
+                        'info' => 'ACTIVO',
+                        'warning' => 'POR CERTIFICAR',
+                        'success' => 'CERTIFICADO',
+                        'danger' => 'CANCELADO/RETIRADO',
                     ])
                     ->icons([
-                        'heroicon-s-sparkles' => 'Activo',
-                        'heroicon-s-document-text' => 'Por Certificar',
-                        'heroicon-s-check-badge' => 'Certificado',
-                        'heroicon-s-x-circle' => 'Cancelado/Retirado',
+                        'heroicon-s-sparkles' => 'ACTIVO',
+                        'heroicon-s-document-text' => 'POR CERTIFICADO',
+                        'heroicon-s-check-badge' => 'CERTIFICADO',
+                        'heroicon-s-x-circle' => 'CANCELADO/RETIRADO',
                     ])
                     ->sortable(),
             ])
@@ -78,10 +78,10 @@ class AprendicesRelationManager extends RelationManager
                 Tables\Filters\SelectFilter::make('estado')
                 ->label('Estado')
                 ->options([
-                    'Activo' => 'Activo',
-                    'Por Certificar' => 'Por Certificar',
-                    'Certificado' => 'Certificado',
-                    'Cancelado/Retirado' => 'Cancelado/Retirado',
+                    'ACTIVO' => 'ACTIVO',
+                    'POR CERTIFICAR' => 'POR CERTIFICAR',
+                    'CERTIFICADO' => 'CERTIFICADO',
+                    'CANCELADO/RETIRADO' => 'CANCELADO/RETIRADO',
                 ]),
     
                 // Filtrar por programa de formación

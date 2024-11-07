@@ -6,7 +6,7 @@ use Filament\Pages\Page;
 use App\Models\InstructorSeguimiento;
 use App\Models\Aprendiz;
 
-class InstrutorPorEstado extends Page
+class InstructorPorEstado extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
     protected static ?string $navigationLabel = 'Instructores X Estado';

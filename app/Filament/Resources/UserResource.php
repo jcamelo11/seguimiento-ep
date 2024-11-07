@@ -41,7 +41,6 @@ class UserResource extends Resource
                         ->label('Email')
                         ->email()
                         ->required()
-                        ->unique(User::class, 'email')
                         ->maxLength(255),
 
                     // Para la creación del usuario, el campo de contraseña es obligatorio

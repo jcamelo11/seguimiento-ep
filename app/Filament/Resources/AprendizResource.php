@@ -44,21 +44,40 @@ class AprendizResource extends Resource implements HasShieldPermissions
     protected static ?string $slug = 'aprendices';
 
     
-    public static function getTableQuery(): Builder
-    {
-        // Obtener el usuario actual
-        $user = Auth::user();
-        
-        // Obtener la consulta inicial del modelo
-        $query = static::getModel()::query();
+//     public static function query(): Builder
+// {
+//     $query = parent::query();
 
-        // Aplicar la condición si el usuario tiene el permiso
-        if ($user && $user->can('ver_aprendices_asignados') && $user->instructorSeguimiento) {
-            $query->where('instructor_seguimiento_id', $user->instructorSeguimiento->id);
-        }
+//     if (auth()->check()) {
+//         $user = auth()->user();
 
-        return $query;
-    }
+//         if ($user->hasRole('instructor_seguimiento')) {
+//             $instructor = $user->instructorSeguimiento;
+
+//             if (!is_null($instructor)) {
+//                 \Log::info('Instructor encontrado', [
+//                     'instructor_id' => $instructor->id,
+//                     'query_before_filter' => $query->toSql(),
+//                 ]);
+
+//                 // Filtra los aprendices asignados a este instructor
+//                 $query->where('instructor_seguimiento_id', $instructor->id);
+//             } else {
+//                 \Log::warning('El usuario no tiene un instructor asignado en instructorSeguimiento.');
+//             }
+//         } else {
+//             \Log::warning('El usuario no tiene el rol "instructor".');
+//         }
+//     } else {
+//         \Log::warning('El usuario no está autenticado.');
+//     }
+
+//     return $query;
+// }
+
+
+
+
     
     public static function form(Form $form): Form
     {
@@ -262,7 +281,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
                                 ->preload(),
                             DatePicker::make('fecha_asignacion')
                                 ->label('Fecha de Asignación')
-                        ]),
+                        ])->visibleOn('edit'),
 
                         Forms\Components\Section::make('Instructor de seguimiento Anterior')
                         ->icon('heroicon-o-user-minus')
@@ -418,8 +437,8 @@ class AprendizResource extends Resource implements HasShieldPermissions
                 ->searchable(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                ->label('Ver'),
+                // Tables\Actions\ViewAction::make()
+                // ->label('Ver'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

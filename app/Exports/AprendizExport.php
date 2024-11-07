@@ -102,9 +102,6 @@ class AprendizExport implements FromCollection, WithHeadings, WithMapping
             ? $aprendiz->instructorSeguimiento->nombre . ' ' . $aprendiz->instructorSeguimiento->apellido 
             : 'N/A',
             $aprendiz->fecha_asignacion,
-
-            
-            
         ];
     }
 }
