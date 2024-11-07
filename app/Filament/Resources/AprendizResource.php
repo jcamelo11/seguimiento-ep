@@ -44,41 +44,6 @@ class AprendizResource extends Resource implements HasShieldPermissions
     protected static ?string $slug = 'aprendices';
 
     
-//     public static function query(): Builder
-// {
-//     $query = parent::query();
-
-//     if (auth()->check()) {
-//         $user = auth()->user();
-
-//         if ($user->hasRole('instructor_seguimiento')) {
-//             $instructor = $user->instructorSeguimiento;
-
-//             if (!is_null($instructor)) {
-//                 \Log::info('Instructor encontrado', [
-//                     'instructor_id' => $instructor->id,
-//                     'query_before_filter' => $query->toSql(),
-//                 ]);
-
-//                 // Filtra los aprendices asignados a este instructor
-//                 $query->where('instructor_seguimiento_id', $instructor->id);
-//             } else {
-//                 \Log::warning('El usuario no tiene un instructor asignado en instructorSeguimiento.');
-//             }
-//         } else {
-//             \Log::warning('El usuario no tiene el rol "instructor".');
-//         }
-//     } else {
-//         \Log::warning('El usuario no está autenticado.');
-//     }
-
-//     return $query;
-// }
-
-
-
-
-    
     public static function form(Form $form): Form
     {
         return $form
@@ -325,14 +290,9 @@ class AprendizResource extends Resource implements HasShieldPermissions
                                         : 'N/A'),
                             ])
                             ->hidden(fn ($record) => is_null($record?->aval?->fecha)),
-                        
                     ])
                     ->columnSpan(['lg' => 1]),
-
             ])->columns(3);
-
-
-           
     }
 
     public static function table(Table $table): Table
@@ -484,20 +444,36 @@ class AprendizResource extends Resource implements HasShieldPermissions
         ];
     }
 
-    // public static function query(): Builder
-    // {
-    //     $user = Auth::user();
-
-    //     // Verifica si el usuario tiene un InstructorSeguimiento asociado
-    //     if ($user && $user->instructorSeguimiento) {
-    //         return parent::query()->where('instructor_seguimiento_id', $user->instructorSeguimiento->id);
-    //     }
-
-    //     return parent::query()->whereNull('instructor_seguimiento_id');
-    // }
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+    
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+    
+        // Verificar si el usuario tiene el rol de instructor
+        if ($user->hasRole('instructor_seguimiento')) {
+            // Si es instructor, filtrar solo sus aprendices asignados
+            return $query->whereHas('instructorSeguimiento', function (Builder $subQuery) use ($user) {
+                $subQuery->where('user_id', $user->id);
+            });
+        }
+    
+        // Si no es instructor, devolver todos los registros
+        return $query;
+    }
 
     public static function getNavigationBadge(): ?string
     {
+        $user = Auth::user();
+    
+        if ($user->hasRole('instructor_seguimiento')) {
+            // Si es instructor, contar solo los aprendices asignados
+            return (string) Aprendiz::whereHas('instructorSeguimiento', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->count();
+        }
+        // Si no es instructor, contar todos los aprendices
         return (string) Aprendiz::count();
     }
 

@@ -14,6 +14,10 @@ use Filament\Notifications\Notification;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\AprendizImport;
 use Illuminate\Support\Facades\Gate;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 
 class ListAprendizs extends ListRecords
@@ -81,10 +85,26 @@ class ListAprendizs extends ListRecords
         ];
     }
 
-    private function aprendicesPorEstado(string $estado = null){
-        if(blank($estado)){
-            return Aprendiz::count();
+    private function aprendicesPorEstado(string $estado = null): int
+    {
+        $user = Auth::user();
+
+        // Si el usuario es un instructor de seguimiento
+        if ($user->hasRole('instructor_seguimiento')) {
+            // Contar solo los aprendices asignados al instructor autenticado
+            return Aprendiz::whereHas('instructorSeguimiento', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->when($estado, function ($query) use ($estado) {
+                return $query->where('estado', $estado);
+            })
+            ->count();
         }
-        return Aprendiz::where('estado', $estado)->count();
+
+        // Si no es instructor de seguimiento, contar todos los aprendices (con o sin estado especificado)
+        return Aprendiz::when($estado, function ($query) use ($estado) {
+            return $query->where('estado', $estado);
+        })->count();
     }
+
 }

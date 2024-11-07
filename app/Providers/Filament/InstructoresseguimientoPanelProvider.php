@@ -34,7 +34,7 @@ class InstructoresseguimientoPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Instructoresseguimiento/Resources'), for: 'App\\Filament\\Instructoresseguimiento\\Resources')
             ->discoverPages(in: app_path('Filament/Instructoresseguimiento/Pages'), for: 'App\\Filament\\Instructoresseguimiento\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+               
             ])
             ->resources([
                 \App\Filament\Resources\AprendizResource::class,
