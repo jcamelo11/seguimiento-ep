@@ -28,7 +28,7 @@ class InstructorCredentials extends Mailable
 
     public function build() 
     { 
-        return $this->subject('Credenciales de Acceso - Instructor') 
+        return $this->subject('Credenciales de Acceso a la Plataforma de Seguimiento') 
         ->view('emails.instructor-credentials'); 
     }
 
