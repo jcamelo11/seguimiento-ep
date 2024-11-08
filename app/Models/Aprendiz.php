@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Notifications\Notifiable;
 use Filament\Notifications\Notification; 
 
+
 class Aprendiz extends Model
 {
     use HasFactory,  Notifiable;

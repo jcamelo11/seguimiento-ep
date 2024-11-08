@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Gate;
 use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
 
+
 class AprendizResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Aprendiz::class;

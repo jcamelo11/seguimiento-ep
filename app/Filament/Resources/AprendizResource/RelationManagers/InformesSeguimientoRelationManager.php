@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
+use Parallax\FilamentComments\Tables\Actions\CommentsAction;
 
 class InformesSeguimientoRelationManager extends RelationManager
 {
@@ -203,6 +204,8 @@ class InformesSeguimientoRelationManager extends RelationManager
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                CommentsAction::make()
+                ->label('Comentar'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
