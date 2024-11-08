@@ -34,6 +34,8 @@ use Filament\Tables\Actions\Action;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Filament\Infolists\Components;
+use Filament\Infolists\Infolist;
 
 class AprendizResource extends Resource implements HasShieldPermissions
 {
@@ -97,7 +99,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
                                 ->default(false),
                             
                         
-                    ])
+                    ])->collapsible()
                     ->columns(2),
 
                     Forms\Components\Section::make('Programa de formación')
@@ -216,8 +218,9 @@ class AprendizResource extends Resource implements HasShieldPermissions
                             ->label('Fecha Final Etapa Lectiva')
                             ->disabled()
                             ->reactive(),
-                    ])
+                    ])->collapsible()
                     ->columns(2)
+
                     ->afterStateHydrated(function ($set, $get) {
                         // Cargar los valores cuando se esté visualizando un registro existente
                         $programa = ProgramaFormacion::find($get('programa_formacion_id'));
@@ -237,6 +240,20 @@ class AprendizResource extends Resource implements HasShieldPermissions
 
                 Forms\Components\Group::make()
                     ->schema([
+                        Forms\Components\Section::make('Estado del Aprendiz')
+                            ->icon('heroicon-o-arrows-up-down')
+                            ->schema([
+                                Forms\Components\Select::make('estado')
+                                ->label('Estado')
+                                ->options([
+                                    'ACTIVO' => 'ACTIVO',
+                                    'POR CERTIFICAR' => 'POR CERTIFICAR',
+                                    'CERTIFICADO' => 'CERTIFICADO',
+                                    'CANCELADO/RETIRADO' => 'CANCELADO/RETIRADO',
+                                ])
+                                ->required(),
+                            ])->collapsible(),
+
                         Forms\Components\Section::make('Instrutor de seguimiento')
                         ->icon('heroicon-o-presentation-chart-line')
                         ->schema([
@@ -245,9 +262,8 @@ class AprendizResource extends Resource implements HasShieldPermissions
                                 ->options(InstructorSeguimiento::all()->pluck('nombre_completo', 'id'))
                                 ->searchable()
                                 ->preload(),
-                            DatePicker::make('fecha_asignacion')
-                                ->label('Fecha de Asignación')
-                        ])->visibleOn('edit'),
+                        ])->visibleOn('edit')
+                        ->collapsible(),
 
                         Forms\Components\Section::make('Instructor de seguimiento Anterior')
                         ->icon('heroicon-o-user-minus')
@@ -263,25 +279,10 @@ class AprendizResource extends Resource implements HasShieldPermissions
                                 ->content(fn ($record) => $record?->instructorHistorial && $record->instructorHistorial->isNotEmpty()
                                     ? $record->instructorHistorial->last()->fecha_asignacion
                                     : 'N/A'),
-                        ])
+                        ])->collapsible()
                         ->hidden(fn ($record) => !$record?->instructorHistorial || $record->instructorHistorial->count() < 2),
 
-
-                        Forms\Components\Section::make('Estado del Aprendiz')
-                        ->icon('heroicon-o-arrows-up-down')
-                            ->schema([
-                                Forms\Components\Select::make('estado')
-                                ->label('Estado')
-                                ->options([
-                                    'ACTIVO' => 'ACTIVO',
-                                    'POR CERTIFICAR' => 'POR CERTIFICAR',
-                                    'CERTIFICADO' => 'CERTIFICADO',
-                                    'CANCELADO/RETIRADO' => 'CANCELADO/RETIRADO',
-                                ])
-                                ->required(),
-                            ]),
-
-                            Forms\Components\Section::make('Aval')
+                        Forms\Components\Section::make('Aval')
                             ->icon('heroicon-o-clipboard-document-check')
                             ->schema([
                                 Forms\Components\Placeholder::make('fecha')
@@ -289,7 +290,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
                                     ->content(fn ($record) => $record?->aval?->fecha 
                                         ? \Carbon\Carbon::parse($record->aval->fecha)->format('d M Y')
                                         : 'N/A'),
-                            ])
+                            ])->collapsible()
                             ->hidden(fn ($record) => is_null($record?->aval?->fecha)),
                     ])
                     ->columnSpan(['lg' => 1]),
@@ -399,7 +400,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
                 ->visible(fn () => Gate::allows('filtar_instructor')),
             ])
             ->actions([
-                // Tables\Actions\ViewAction::make()
+                Tables\Actions\ViewAction::make(),
                 // ->label('Ver'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -425,13 +426,129 @@ class AprendizResource extends Resource implements HasShieldPermissions
             ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+{
+    return $infolist
+        ->schema([
+            Components\Group::make()
+                ->schema([
+                    Components\Section::make('Datos Personales')
+                        ->icon('heroicon-o-identification')
+                        ->schema([
+                            Components\TextEntry::make('tipo_documento')->label('Tipo de Documento'),
+                            Components\TextEntry::make('numero_documento')->label('Número de Documento'),
+                            Components\TextEntry::make('nombres')->label('Nombres'),
+                            Components\TextEntry::make('apellidos')->label('Apellidos'),
+                            Components\TextEntry::make('celular1')
+                            ->label('Celular 1')
+                            ->state(fn ($record) => $record?->celular1 ?? 'N/A'),
+                            Components\TextEntry::make('celular2')
+                                ->label('Celular 2')
+                                ->state(fn ($record) => $record?->celular2 ?? 'N/A'),
+                            Components\TextEntry::make('correo_personal')
+                                ->label('Correo Personal')
+                                ->state(fn ($record) => $record?->correo_personal ?? 'N/A'),
+                            Components\TextEntry::make('correo_institucional')
+                                ->label('Correo Institucional')
+                                ->state(fn ($record) => $record?->correo_institucional ?? 'N/A'),
+                            Components\TextEntry::make('genero')->label('Género'),
+                           
+                        ])
+                        ->columns(2)
+                        ->collapsible(),
+
+                    Components\Section::make('Programa de formación')
+                        ->icon('heroicon-o-academic-cap')
+                        ->schema([
+                            Components\TextEntry::make('programaFormacion.ficha')->label('N° de Ficha'),
+                            Components\TextEntry::make('programaFormacion.nombre_programa')->label('Nombre del Programa'),
+                            Components\TextEntry::make('programaFormacion.nivel_formacion')->label('Nivel de Formacion'),
+                            Components\TextEntry::make('programaFormacion.modalidad')->label('Modalidad'),
+                            Components\TextEntry::make('programaFormacion.municipio_ficha')->label('Municipio de la Ficha'),
+                            Components\TextEntry::make('programaFormacion.lider_programa')->label('Líder del Programa'),
+                            Components\TextEntry::make('programaFormacion.fecha_final')->label('Fecha Final Etapa Lectiva')->date(),
+                            Components\TextEntry::make('pruebas_tyt')
+                            ->label('¿Ya realizó Pruebas TyT?')
+                            ->state(fn($record) => $record->pruebas_tyt ? 'Sí' : 'No'),
+                        ])
+                        ->columns(2)
+                        ->collapsible()
+                ])
+                ->columnSpan(['lg' => 2]),
+
+            Components\Group::make()
+                ->schema([
+                    Components\Section::make('Estado del Aprendiz')
+                        ->icon('heroicon-o-arrows-up-down')
+                        ->schema([
+                            Components\TextEntry::make('estado')
+                                ->label('Estado')
+                                ->badge()
+                                ->colors([
+                                    'primary',
+                                    'info' => 'ACTIVO',
+                                    'warning' => 'POR CERTIFICAR',
+                                    'success' => 'CERTIFICADO',
+                                    'danger' => 'CANCELADO/RETIRADO',
+                                ])
+                                ->icons([
+                                    'heroicon-s-sparkles' => 'ACTIVO',
+                                    'heroicon-s-document-text' => 'POR CERTIFICAR',
+                                    'heroicon-s-check-badge' => 'CERTIFICADO',
+                                    'heroicon-s-x-circle' => 'CANCELADO/RETIRADO',
+                                ])
+                        ])->collapsible(),
+
+                        Components\Section::make('Instructor de seguimiento')
+                        ->icon('heroicon-o-presentation-chart-line')
+                        ->schema([
+                            Components\TextEntry::make('instructorSeguimiento.nombre_completo')->label('Nombre y apellido'),
+                            Components\TextEntry::make('fecha_asignacion')->label('Fecha de Asignación')->date()
+                        ])
+                        ->collapsible()
+                        ->hidden(fn ($record) => is_null($record?->instructorSeguimiento)),
+                    
+
+                    Components\Section::make('Instructor de seguimiento Anterior')
+                        ->icon('heroicon-o-user-minus')
+                        ->schema([
+                            Components\TextEntry::make('instructor_anterior')
+                                ->label('Instructor Anterior')
+                                ->state(fn ($record) => $record?->instructorHistorial && $record->instructorHistorial->isNotEmpty()
+                                    ? optional($record->instructorHistorial->last()->instructorSeguimiento)->nombre_completo
+                                    : 'N/A'),
+
+                            Components\TextEntry::make('fecha_asignacion_anterior')
+                                ->label('Fecha de Asignación')
+                                ->state(fn ($record) => $record?->instructorHistorial && $record->instructorHistorial->isNotEmpty()
+                                    ? $record->instructorHistorial->last()->fecha_asignacion
+                                    : 'N/A')->date(),
+                        ])->collapsible()
+                        ->hidden(fn ($record) => !$record?->instructorHistorial || $record->instructorHistorial->count() < 2),
+
+
+                    Components\Section::make('Aval')
+                        ->icon('heroicon-o-clipboard-document-check')
+                        ->schema([
+                            Components\TextEntry::make('fecha')
+                                ->label('Fecha de Aval')
+                                ->state(fn ($record) => $record?->aval?->fecha 
+                                    ? \Carbon\Carbon::parse($record->aval->fecha)->format('d M Y')
+                                    : 'N/A'),
+                        ])->collapsible()
+                        ->hidden(fn ($record) => is_null($record?->aval?->fecha)),
+                ])
+                ->columnSpan(['lg' => 1]),
+        ])->columns(3);
+}
+
+
     
     public static function getRelations(): array
     {
         return [
             RelationManagers\EtapaProductivaRelationManager::class,
             RelationManagers\InformesSeguimientoRelationManager::class,
-            //RelationManagers\InstructorSeguimientoRelationManager::class,
         ];
     }
 

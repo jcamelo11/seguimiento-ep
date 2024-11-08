@@ -131,7 +131,7 @@
             <p><em><span>Equipo de Seguimiento de Etapa Productiva</span></em></p>
         @else
             <p>
-                Le informamos que se le ha asignado a <strong><span>{{ $instructorNombre }}</span></strong> como su  <strong>Instructor de Seguimiento </strong>. Puede comunicarse mediante correo electrónico a <a href="{{ $instructorCorreo }}">{{ $instructorCorreo }}</a>. A continuación, le detallo algunas sugerencias para iniciar el procedimiento de Seguimiento a Etapa Productiva:
+                Le informamos que se le ha asignado a <strong>{{ $instructorNombre }}</strong> como su  <strong><span>Instructor de Seguimiento</span></strong>. Puede comunicarse mediante correo electrónico a <a href="{{ $instructorCorreo }}">{{ $instructorCorreo }}</a>. A continuación, le detallo algunas sugerencias para iniciar el procedimiento de Seguimiento a Etapa Productiva:
             </p>
 
             <ul>
@@ -211,7 +211,7 @@
                     <tr>
                         <th>Instructor Lider</th>
                         <td>{{ $instructorLider }}</td>
-                        <th>modalidad EP</th>
+                        <th>Modalidad EP</th>
                         <td>{{ $modalidadEtapa }}</td>
                     </tr>
                     <tr>

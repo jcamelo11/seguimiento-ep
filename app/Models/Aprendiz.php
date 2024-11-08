@@ -76,23 +76,25 @@ class Aprendiz extends Model
     protected static function boot()
     {
         parent::boot();
-    
-        static::updating(function ($aprendiz) {
 
+        static::updating(function ($aprendiz) {
             $esReasignacion = !is_null($aprendiz->getOriginal('instructor_seguimiento_id'));
 
             // Solo guardar el historial si instructor_seguimiento_id cambia
             if ($aprendiz->isDirty('instructor_seguimiento_id')) {
+                // Establece la fecha de asignación como la fecha actual
+                $aprendiz->fecha_asignacion = now();
+
                 InstructorHistorial::create([
                     'aprendiz_id' => $aprendiz->id,
                     'instructor_seguimiento_id' => $aprendiz->getOriginal('instructor_seguimiento_id'),
                     'fecha_asignacion' => $aprendiz->getOriginal('fecha_asignacion'),
                 ]);
 
-                    // Determina el mensaje para la notificación
+                // Determina el mensaje para la notificación
                 $mensaje = $esReasignacion 
-                ? 'El instructor ha sido reasignado al aprendiz.' 
-                : 'Se ha asignado un nuevo instructor al aprendiz.';
+                    ? 'El instructor ha sido reasignado al aprendiz.' 
+                    : 'Se ha asignado un nuevo instructor al aprendiz.';
 
                 // Genera la notificación de Filament
                 Notification::make()
@@ -102,13 +104,11 @@ class Aprendiz extends Model
                     ->duration(10000)
                     ->send();
             }
-            // Solo enviar correo si cambia el instructor o la fecha de asignación
+
             if ($aprendiz->isDirty('instructor_seguimiento_id') || $aprendiz->isDirty('fecha_asignacion')) {
-                // Obtener el nuevo instructor y la fecha de asignación
                 $instructor = $aprendiz->instructorSeguimiento;
                 $fechaAsignacion = $aprendiz->fecha_asignacion;
 
-                // Enviar correo al aprendiz sobre la asignación o reasignación
                 Mail::to($aprendiz->correo_institucional ?? $aprendiz->correo_personal)
                     ->cc($instructor->correo_institucional)
                     ->send(new AsignacionInstructorMail($aprendiz, $instructor, $fechaAsignacion, $esReasignacion));
@@ -116,12 +116,5 @@ class Aprendiz extends Model
         });
     }
 
-   
-
-
-
-    
-
-  
     
 }
