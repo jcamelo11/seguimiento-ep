@@ -94,9 +94,13 @@ class AprendizResource extends Resource implements HasShieldPermissions
                                 'Otro' => 'Otro',
                             ])
                             ->required(),
-                            Forms\Components\Toggle::make('pruebas_tyt')
-                                ->label('¿Ya realizó Pruebas TyT?')
-                                ->default(false),
+                        Forms\Components\Select::make('pruebas_tyt')
+                            ->label('¿Ya realizó Pruebas TyT?')
+                            ->options([
+                                'SI' => 'Sí',
+                                'NO' => 'No',
+                            ])
+                                
                             
                         
                     ])->collapsible()
