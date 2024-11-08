@@ -105,6 +105,4 @@ class InstructorSeguimientoPolicy
     {
         return $user->can('reorder_instructor::seguimiento');
     }
-
-    
 }

@@ -8,12 +8,27 @@ use App\Models\ProgramaFormacion;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Carbon\Carbon;
 
-class AprendizImport implements ToModel, WithHeadingRow, WithValidation
+class AprendizImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnError
 {
+    use SkipsErrors;
+
+    private $skippedCount = 0;
+    private $importedCount = 0;
+
     public function model(array $row)
     {
+        // Check if the aprendiz already exists
+        $existingAprendiz = Aprendiz::where('numero_documento', $row['numero_documento'])->first();
+
+        if ($existingAprendiz) {
+            $this->skippedCount++;
+            return null; // Skip this record
+        }
+
         $programaFormacion = ProgramaFormacion::firstOrCreate(
             ['ficha' => $row['ficha'] ?? null],
             [
@@ -41,7 +56,6 @@ class AprendizImport implements ToModel, WithHeadingRow, WithValidation
             'programa_formacion_id' => $programaFormacion->id,
         ]);
 
-        // Crear y asociar la etapa productiva al aprendiz
         $etapaProductiva = new EtapaProductiva([
             'modalidad_etapa' => $row['modalidad_etapa'] ?? null,
             'fecha_inicio' => $this->convertExcelDate($row['fecha_inicio'] ?? null),
@@ -53,29 +67,25 @@ class AprendizImport implements ToModel, WithHeadingRow, WithValidation
             'patrocinio' => $this->convertExcelDate($row['fecha_final'] ?? null),
         ]);
 
-        // Guardar la etapa productiva y asociarla al aprendiz
         $aprendiz->etapaProductiva()->save($etapaProductiva);
+
+        $this->importedCount++;
 
         return $aprendiz;
     }
 
     private function convertExcelDate($excelDate)
     {
-        // Si la fecha es nula, retorna null
         if (!$excelDate) {
             return null;
         }
         
-        // Si es un número, conviértelo a una fecha
         if (is_numeric($excelDate)) {
             return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($excelDate))->format('Y-m-d');
         }
 
-        // Si ya está en formato de fecha (YYYY-MM-DD), devuélvelo sin cambios
         return $excelDate;
     }
-
-
 
     public function rules(): array
     {
@@ -83,8 +93,17 @@ class AprendizImport implements ToModel, WithHeadingRow, WithValidation
             'nombres' => 'required',
             'apellidos' => 'required',
             'modalidad_etapa' => 'required',
-            
-            // Otras reglas necesarias
+            'numero_documento' => 'required',
         ];
+    }
+
+    public function getSkippedCount()
+    {
+        return $this->skippedCount;
+    }
+
+    public function getImportedCount()
+    {
+        return $this->importedCount;
     }
 }

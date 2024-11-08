@@ -34,27 +34,30 @@ class ListAprendizs extends ListRecords
             ->form([
                 FileUpload::make('attachment'),
             ])
-            ->action(function(array $data) {
-                try {
-                    $file = public_path('storage/' . $data['attachment']);
-            
-                    Excel::import(new AprendizImport, $file);
-            
-                    Notification::make()
-                        ->title('Éxito')
-                        ->body('Los aprendices han sido importados correctamente')
-                        ->success()
-                        ->send();
-                } catch (\Exception $e) {
-                    Notification::make()
-                        ->title('Error')
-                        ->body('No se pudieron importar los aprendices: ' . $e->getMessage())
-                        ->danger()
-                        ->send();
-                }
-            })->visible(fn () => Gate::allows('importar_aprendiz')),
-            
-
+                ->action(function(array $data) {
+                    try {
+                        $file = public_path('storage/' . $data['attachment']);
+                        
+                        $import = new AprendizImport();
+                        Excel::import($import, $file);
+                        
+                        $skippedCount = $import->getSkippedCount();
+                        $importedCount = $import->getImportedCount();
+                        
+                        Notification::make()
+                            ->title('Importación completada')
+                            ->body("Se importaron {$importedCount} aprendices. {$skippedCount} registros ya existían y fueron omitidos.")
+                            ->success()
+                            ->send();
+                    } catch (\Exception $e) {
+                        Notification::make()
+                            ->title('Error')
+                            ->body('No se pudieron importar los aprendices: ' . $e->getMessage())
+                            ->danger()
+                            ->send();
+                    }
+                })->visible(fn () => Gate::allows('importar_aprendiz')),
+                
             Actions\Action::make('export')
             ->label('Exportar')
             ->icon('heroicon-s-document-arrow-down')

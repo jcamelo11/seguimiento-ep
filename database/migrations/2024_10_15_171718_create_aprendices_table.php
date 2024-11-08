@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('aprendices', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('tipo_documento');
-            $table->string('numero_documento')->unique();
+            $table->string('numero_documento');
             $table->string('nombres');
             $table->string('apellidos');
             $table->string('celular1')->nullable();
