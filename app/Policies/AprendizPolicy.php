@@ -129,4 +129,9 @@ class AprendizPolicy
     { 
         return $user->can('ver_aprendices_asignados');
     }
+
+    public function filtarInstructor(User $user) 
+    { 
+        return $user->can('filtar_instructor');
+    }
 }

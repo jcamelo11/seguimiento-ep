@@ -131,7 +131,7 @@
             <p><em><span>Equipo de Seguimiento de Etapa Productiva</span></em></p>
         @else
             <p>
-                Le informamos que se le ha asignado a <strong>{{ $instructorNombre }}</strong> como su <span> <strong>Instructor de Seguimiento </strong></span>. Puede comunicarse mediante correo electrónico a <a href="{{ $instructorCorreo }}">{{ $instructorCorreo }}</a>. A continuación, le detallo algunas sugerencias para iniciar el procedimiento de Seguimiento a Etapa Productiva:
+                Le informamos que se le ha asignado a <strong><span>{{ $instructorNombre }}</span></strong> como su  <strong>Instructor de Seguimiento </strong>. Puede comunicarse mediante correo electrónico a <a href="{{ $instructorCorreo }}">{{ $instructorCorreo }}</a>. A continuación, le detallo algunas sugerencias para iniciar el procedimiento de Seguimiento a Etapa Productiva:
             </p>
 
             <ul>
@@ -251,56 +251,6 @@
             </tbody>
             </table>
         @endif
-
-        
-
-
-        {{-- <div class="signature">
-            
-            <table class="signature-table">
-                <tr>
-                    <th>Ficha</th>
-                    <td>{{ $ficha }}</td>
-                    <th>Programa</th>
-                    <td>{{ $programa }}</td>
-                </tr>
-                <tr>
-                    <th>Nivel</th>
-                    <td>{{ $nivel }}</td>
-                    <th>Documento</th>
-                    <td>{{ $documento }}</td>
-                </tr>
-                <tr>
-                    <th>Teléfono</th>
-                    <td>{{ $telefono }}</td>
-                    <th>Correo</th>
-                    <td>{{ $correo }}</td>
-                </tr>
-                
-                <tr>
-                    <th>Modalidad</th>
-                    <td>{{ $modalidad }}</td>
-                    <th>Instructor Lider</th>
-                    <td>{{ $instructorLider }}</td>
-                </tr>
-                <tr>
-                    <th>Contrato</th>
-                    <td>{{ $modalidadEtapa }}</td>
-                    <th>Inicio EP</th>
-                    <td>{{ $inicio }}</td>
-                </tr>
-                <tr>
-                    <th>Fin EP</th>
-                    <td>{{ $final }}</td>
-                    <th>Empresa</th>
-                    <td>{{ $empresa }}</td>
-                </tr>
-                <tr>
-                    <th>Instructor de Seguimiento</th>
-                    <td colspan="3">{{ $instructorNombre }}</td>
-                </tr>
-            </table>
-        </div> --}}
     </div>
 </body>
 </html>

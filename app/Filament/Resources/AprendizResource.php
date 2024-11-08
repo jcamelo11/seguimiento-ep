@@ -33,6 +33,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Filament\Tables\Actions\Action;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class AprendizResource extends Resource implements HasShieldPermissions
 {
@@ -394,7 +395,8 @@ class AprendizResource extends Resource implements HasShieldPermissions
                 Tables\Filters\SelectFilter::make('instructor_seguimiento_id')
                 ->label('Instructor seguimiento')
                 ->relationship('instructorSeguimiento', 'nombres') // Relación para filtrar
-                ->searchable(),
+                ->searchable()
+                ->visible(fn () => Gate::allows('filtar_instructor')),
             ])
             ->actions([
                 // Tables\Actions\ViewAction::make()
@@ -416,7 +418,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
                     ->icon('heroicon-o-document-arrow-down')
                     ->action(function () {
                         return Excel::download(new AprendizExport, 'aprendices.xlsx');
-                    }),
+                    })->visible(fn () => Gate::allows('exportar_aprendiz')),
 
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
@@ -510,7 +512,8 @@ class AprendizResource extends Resource implements HasShieldPermissions
             'importar',
             'generar_informes',
             'generar_aval',
-            'ver_aprendices_asignados'
+            'ver_aprendices_asignados',
+            'filtar_instructor'
         ];
     }
 }
