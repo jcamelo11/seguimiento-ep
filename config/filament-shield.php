@@ -63,8 +63,8 @@ return [
         'importar' => [
             'description' => 'Permite importar aprendices',
         ],
-        '' => [
-            'description' => '',
+        'filtar_instructor' => [
+            'description' => 'Permite filtar insr',
         ],
     ],
 

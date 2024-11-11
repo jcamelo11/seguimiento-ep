@@ -400,7 +400,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
                 ->label('Instructor seguimiento')
                 ->relationship('instructorSeguimiento', 'nombres') // Relación para filtrar
                 ->searchable()
-                ->visible(fn () => Gate::allows('filtar_instructor')),
+                ->visible(fn () => Gate::allows('exportar_aprendiz')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
