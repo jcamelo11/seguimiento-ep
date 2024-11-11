@@ -45,6 +45,7 @@ class AprendizParaCertificacion extends Mailable
 
         return $this->subject("Aprendiz $nombreCompleto $ficha - con informes de seguimiento OK para CERTIFICACIÓN")
                     ->view('emails.informes.aprobado')
+                    ->cc('llinan@sena.edu.co')
                     ->with([
                         'nombreCompleto' => $nombreCompleto,
                         'programa' => $programa,

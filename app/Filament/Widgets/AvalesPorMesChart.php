@@ -7,6 +7,7 @@ use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 use App\Models\Aval;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AvalesPorMesChart extends ChartWidget
 {
@@ -54,17 +55,17 @@ class AvalesPorMesChart extends ChartWidget
 
     protected function getFilters(): ?array
     {
-        $currentYear = now()->year;
-        $startYear = 2021; // Puedes ajustar el año de inicio según tus necesidades
+        $years = DB::table('avales')
+            ->selectRaw('DISTINCT YEAR(created_at) as year')
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->mapWithKeys(function ($year) {
+                return [$year => (string) $year];
+            })
+            ->toArray();
     
-        $years = [];
-        for ($year = $startYear; $year <= $currentYear; $year++) {
-            $years[$year] = (string) $year;
-        }
-    
-        return $years;
+        return $years ?: null;
     }
-    
 
     protected function getType(): string
     {

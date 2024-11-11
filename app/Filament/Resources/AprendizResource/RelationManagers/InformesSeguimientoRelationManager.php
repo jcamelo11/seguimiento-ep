@@ -98,7 +98,6 @@ class InformesSeguimientoRelationManager extends RelationManager
                     if ($correoDestinatario) {
                         // Enviar el correo de notificación al aprendiz
                         Mail::to($correoDestinatario)
-                        ->cc('llinan@sena.edu.co') 
                         ->send(new AprendizParaCertificacion($aprendiz));
 
                         // Notificación de éxito dentro de la aplicación
