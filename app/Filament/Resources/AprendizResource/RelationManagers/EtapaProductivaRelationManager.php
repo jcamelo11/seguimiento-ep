@@ -97,7 +97,8 @@ class EtapaProductivaRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('etapa_de_la_practica')
                 ->label('Estado de la Práctica'),
                 Tables\Columns\TextColumn::make('patrocinio')
-                ->label('Fecha inicio Patrocinio'),
+                ->label('Fecha inicio Patrocinio')
+                ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('d M Y')),
                 Tables\Columns\TextColumn::make('fecha_final_prorroga')
                 ->label('Fecha Final Prorroga')
                 ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('d M Y')),

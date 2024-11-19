@@ -64,7 +64,7 @@ class AprendizImport implements ToModel, WithHeadingRow, WithValidation, SkipsOn
             'empresa' => $row['empresa'] ?? null,
             'ciudad_practica' => $row['ciudad_practica'] ?? null,
             'etapa_de_la_practica' => $row['etapa_de_la_practica'] ?? null,
-            'patrocinio' => $this->convertExcelDate($row['fecha_final'] ?? null),
+            'patrocinio' => $this->convertExcelDate($row['patrocinio'] ?? null),
         ]);
 
         $aprendiz->etapaProductiva()->save($etapaProductiva);

@@ -22,7 +22,7 @@ class CreateInstructorSeguimiento extends CreateRecord
          $user = User::create([ 
             'name' => $instructor->nombres . ' ' . $instructor->apellidos,
             'email' => $instructor->correo_institucional, 
-            'password' => Hash::make($randomPassword), 
+            'password' => Hash::make('secret_password'), 
         ]); 
         
         $user->assignRole('panel_user'); 

@@ -96,8 +96,8 @@ class AprendizResource extends Resource implements HasShieldPermissions
                         Forms\Components\Select::make('pruebas_tyt')
                             ->label('¿Ya realizó Pruebas TyT?')
                             ->options([
-                                'SI' => 'Sí',
-                                'NO' => 'No',
+                                'SI' => 'SI',
+                                'NO' => 'NO',
                             ])
                                 
                             
@@ -403,7 +403,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
                 ->visible(fn () => Gate::allows('exportar_aprendiz')),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                //Tables\Actions\ViewAction::make(),
                 // ->label('Ver'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -472,7 +472,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
                             Components\TextEntry::make('programaFormacion.fecha_final')->label('Fecha Final Etapa Lectiva')->date(),
                             Components\TextEntry::make('pruebas_tyt')
                             ->label('¿Ya realizó Pruebas TyT?')
-                            ->state(fn($record) => $record->pruebas_tyt ? 'Sí' : 'No'),
+                            ->state(fn($record) => $record->pruebas_tyt ? 'SI' : 'NO'),
                         ])
                         ->columns(2)
                         ->collapsible()
