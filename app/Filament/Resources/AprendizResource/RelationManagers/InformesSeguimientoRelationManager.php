@@ -24,7 +24,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 use Parallax\FilamentComments\Tables\Actions\CommentsAction;
 
-class InformesSeguimientoRelationManager extends RelationManager
+
+class InformesSeguimientoRelationManager extends RelationManager 
 {
     protected static string $relationship = 'informesSeguimiento';
 
@@ -200,16 +201,28 @@ class InformesSeguimientoRelationManager extends RelationManager
                 }),
             ])
             ->actions([
+                Tables\Actions\Action::make('view')
+                ->label('Ver')
+                ->icon('heroicon-s-bell-alert')
+                ->visible(fn () => Gate::allows('correcion_informe_instructor::seguimiento')),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                CommentsAction::make()
-                ->label('Comentar'),
+                // CommentsAction::make()
+                // ->label('Comentar'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'filtrar_instructores',
+            'notify_correction', // Permiso personalizado
+        ];
     }
 }

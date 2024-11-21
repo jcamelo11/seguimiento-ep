@@ -17,8 +17,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Model; 
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 
-class InstructorSeguimientoResource extends Resource
+class InstructorSeguimientoResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = InstructorSeguimiento::class;
 
@@ -158,5 +159,19 @@ class InstructorSeguimientoResource extends Resource
     {
         // Concatenar nombres y apellidos para mostrar el nombre completo
         return "{$record->nombres} {$record->apellidos}";
+    }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'filtrar_instructor',
+            'correcion_informe', // Permiso personalizado
+        ];
     }
 }

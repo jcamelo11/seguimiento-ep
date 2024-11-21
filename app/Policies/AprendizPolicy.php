@@ -18,8 +18,6 @@ class AprendizPolicy
         return $user->can('view_any_aprendiz');
     }
 
-    
-
     /**
      * Determine whether the user can view the model.
      */
@@ -52,11 +50,6 @@ class AprendizPolicy
         return $user->can('delete_aprendiz');
     }
 
-    public function filtarInstructor(User $user, Aprendiz $aprendiz): bool
-    {
-        return $user->can('filtar_instructor');
-    }
-
     /**
      * Determine whether the user can bulk delete.
      */
@@ -64,8 +57,6 @@ class AprendizPolicy
     {
         return $user->can('delete_any_aprendiz');
     }
-
-    
 
     /**
      * Determine whether the user can permanently delete.

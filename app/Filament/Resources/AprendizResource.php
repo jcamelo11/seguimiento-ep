@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
+
 class AprendizResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Aprendiz::class;
@@ -400,7 +401,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
                 ->label('Instructor seguimiento')
                 ->relationship('instructorSeguimiento', 'nombres') // Relación para filtrar
                 ->searchable()
-                ->visible(fn () => Gate::allows('exportar_aprendiz')),
+                ->visible(fn () => Gate::allows('filtrar_instructor_instructor::seguimiento')),
             ])
             ->actions([
                 //Tables\Actions\ViewAction::make(),
@@ -632,8 +633,10 @@ class AprendizResource extends Resource implements HasShieldPermissions
             'importar',
             'generar_informes',
             'generar_aval',
-            'ver_aprendices_asignados',
-            'filtar_instructor'
+            'editar_etapa_productiva',
+            'eliminar_etapa_productiva',
+            'editar_informes_seguimiento',
+            'eliminar_informes_seguimiento',
         ];
     }
 }

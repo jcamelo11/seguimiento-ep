@@ -54,4 +54,6 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasOne(InstructorSeguimiento::class);
     }
+
+   
 }

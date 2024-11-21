@@ -63,7 +63,7 @@ class InstructorSeguimientoPolicy
      */
     public function forceDelete(User $user, InstructorSeguimiento $instructorSeguimiento): bool
     {
-        return $user->can('force_delete_instructor::seguimiento');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +71,7 @@ class InstructorSeguimientoPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_instructor::seguimiento');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +79,7 @@ class InstructorSeguimientoPolicy
      */
     public function restore(User $user, InstructorSeguimiento $instructorSeguimiento): bool
     {
-        return $user->can('restore_instructor::seguimiento');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +87,7 @@ class InstructorSeguimientoPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_instructor::seguimiento');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +95,7 @@ class InstructorSeguimientoPolicy
      */
     public function replicate(User $user, InstructorSeguimiento $instructorSeguimiento): bool
     {
-        return $user->can('replicate_instructor::seguimiento');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +103,6 @@ class InstructorSeguimientoPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_instructor::seguimiento');
+        return $user->can('{{ Reorder }}');
     }
 }

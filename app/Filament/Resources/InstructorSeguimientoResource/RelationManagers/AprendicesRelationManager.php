@@ -96,7 +96,7 @@ class AprendicesRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\Action::make('view')
                 ->label('Ver')
-                ->icon('heroicon-o-eye')
+                ->icon('heroicon-s-eye')
                 ->url(fn ($record) => AprendizResource::getUrl('view', ['record' => $record->id])) // Redirigir al AprendizResource
                 ->openUrlInNewTab(),
             ])

@@ -47,6 +47,13 @@ return [
 
         'page' => 'page',
         'widget' => 'widget',
+
+        'relation_manager' => [
+        'view_any',
+        'create',
+        'update',
+        'delete',
+    ]
     ],
 
     'entities' => [
@@ -54,19 +61,10 @@ return [
         'widgets' => true,
         'resources' => true,
         'custom_permissions' => true,
+        'relation_manager' => true,
     ],
 
-    'custom_permissions' => [
-        'exportar' => [
-            'description' => 'Permite exportar aprendices.',
-        ],
-        'importar' => [
-            'description' => 'Permite importar aprendices',
-        ],
-        'filtar_instructor' => [
-            'description' => 'Permite filtar insr',
-        ],
-    ],
+    
 
 
     'generator' => [
