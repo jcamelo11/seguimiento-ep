@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
+use Illuminate\Notifications\Notifiable;
 
 
 class InformesSeguimiento extends Model
 {
-    use HasFactory, HasFilamentComments;
+    use HasFactory, HasFilamentComments, Notifiable;
 
     protected $table = 'informes_seguimiento';
 

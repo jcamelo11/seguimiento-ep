@@ -52,15 +52,17 @@ class Aprendiz extends Model
         return $this->belongsTo(InstructorSeguimiento::class, 'instructor_seguimiento_id');
     }
 
+    public function informesSeguimiento(): HasMany
+    {
+        return $this->hasMany(InformesSeguimiento::class);
+    }
+
     public function instructorHistorial()
     {
         return $this->hasMany(InstructorHistorial::class);
     }
 
-    public function informesSeguimiento(): HasMany
-    {
-        return $this->hasMany(InformesSeguimiento::class);
-    }
+
 
     public function scopeAssignedToInstructor(Builder $query, $userId) 
     { 

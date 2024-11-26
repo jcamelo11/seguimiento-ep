@@ -23,6 +23,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 use Parallax\FilamentComments\Tables\Actions\CommentsAction;
+use Filament\Tables\Actions\Action; // Para definir acciones en tablas de Filament
+use Illuminate\Support\Facades\DB;  // Para verificar permisos con el Gate
+use Illuminate\Support\Str; // Para generar UUIDs
+use App\Notifications\CorreccionInformeNotification; // Para enviar notificaciones
+
 
 
 class InformesSeguimientoRelationManager extends RelationManager 
@@ -201,10 +206,47 @@ class InformesSeguimientoRelationManager extends RelationManager
                 }),
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
-                ->label('Ver')
-                ->icon('heroicon-s-bell-alert')
-                ->visible(fn () => Gate::allows('correcion_informe_instructor::seguimiento')),
+                Tables\Actions\Action::make('notificar_error')
+                    ->label('Notificar corrección')
+                    ->icon('heroicon-s-bell-alert')
+                    ->visible(fn ($record) => $record->estado_informe === 'RE - Errores' && Gate::allows('correcion_informe_instructor::seguimiento'))
+                    ->action(function ($record) {
+                        $instructor = auth()->user()->instructorSeguimiento; // Obtener el instructor actual
+                        $aprendiz = $record->aprendiz; // Relación con el aprendiz
+                        $informe = $record; // Informe corregido
+                        
+                        if (!$instructor || !$aprendiz) {
+                            return; // Asegurarse de que existan datos válidos
+                        }
+                        
+                        // Datos de la notificación
+                        $notificationData = [
+                            'instructor' => $instructor->nombre_completo,
+                            'aprendiz' => $aprendiz->nombres . ' ' . $aprendiz->apellidos,
+                            'informe' => $informe->nombre,
+                        ];
+
+                        // Crear una notificación
+                        $aprendiz->notify(new \App\Notifications\CorreccionInformeNotification($notificationData));
+                        
+                        // Guardar la notificación en la tabla
+                        \DB::table('notifications')->insert([
+                            'id' => \Illuminate\Support\Str::uuid(),
+                            'type' => 'App\Notifications\CorreccionInformeNotification',
+                            'notifiable_type' => get_class($aprendiz),
+                            'notifiable_id' => $aprendiz->id,
+                            'data' => json_encode($notificationData),
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+
+                        Notification::make()
+                        ->title('Notificación Enviada')
+                        ->body('Se le notificado al equipo de seguimiento de las correcions del informe')
+                        ->success()
+                        ->send();
+                    }),
+
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

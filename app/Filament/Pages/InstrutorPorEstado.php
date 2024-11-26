@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Gate;
 
 class InstructorPorEstado extends Page
 {
+   
+    
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
     protected static ?string $navigationLabel = 'Instructores X Estado';
     protected static ?string $title = 'Instructores por estado';
