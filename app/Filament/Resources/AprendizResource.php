@@ -46,6 +46,7 @@ class AprendizResource extends Resource implements HasShieldPermissions
     protected static ?string $pluralLabel = 'Aprendices';
     protected static ?string $slug = 'aprendices';
 
+    protected static ?string $navigationGroup = 'Seguimiento';
     
     public static function form(Form $form): Form
     {

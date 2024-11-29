@@ -16,6 +16,8 @@ class InstructorPorEstado extends Page
     protected static ?string $title = 'Instructores por estado';
     protected static ?int $navigationSort = 4;
 
+    protected static ?string $navigationGroup = 'Seguimiento';
+
     protected static string $view = 'filament.pages.instrutor-por-estado';
 
     

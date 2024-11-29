@@ -30,6 +30,8 @@ class InstructorSeguimientoResource extends Resource implements HasShieldPermiss
     protected static ?string $pluralLabel = 'Instructores';
     protected static ?string $slug = 'Instructores';
 
+    protected static ?string $navigationGroup = 'Seguimiento';
+
     public static function form(Form $form): Form
     {
         return $form
