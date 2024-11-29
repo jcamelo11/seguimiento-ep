@@ -1,7 +1,7 @@
 <x-filament::page>
     <div class="space-y-6">
         @forelse ($this->notifications as $notification)
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg transition duration-300 ease-in-out hover:shadow-md">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg transition duration-300 ease-in-out hover:shadow-md">
                 <div class="p-6">
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0">
@@ -12,14 +12,14 @@
                             @endif
                         </div>
                         <div class="flex-grow min-w-0">
-                            <p class="text-m font-medium text-gray-900 mb-1">
+                            <p class="text-m font-medium text-gray-900 dark:text-gray-100 mb-1">
                                 {{ $notification->data['message'] ?? 'Notificación' }}
                             </p>
-                            <p class="text-xs text-gray-500">
+                            <p class="text-xs text-gray-500 dark:text-gray-400">
                                 {{ $notification->created_at->diffForHumans() }}
                             </p>
                         </div>
-                        <div class="flex-shrink-0 flex space-x-4"> <!-- Ajusta space-x-4 o cualquier valor deseado -->
+                        <div class="flex-shrink-0 flex space-x-4">
                             @unless ($notification->read_at)
                                 <x-filament::button
                                     wire:click="markAsRead('{{ $notification->id }}')"
@@ -44,9 +44,9 @@
             </div>
         @empty
             <div class="text-center py-12">
-                <x-heroicon-o-bell-slash class="mx-auto h-12 w-12 text-gray-400" />
-                <h3 class="mt-2 text-m font-medium text-gray-900">No hay notificaciones</h3>
-                <p class="mt-1 text-sm text-gray-500">Cuando recibas notificaciones, aparecerán aquí.</p>
+                <x-heroicon-o-bell-slash class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" />
+                <h3 class="mt-2 text-m font-medium text-gray-900 dark:text-gray-100">No hay notificaciones</h3>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Cuando recibas notificaciones, aparecerán aquí.</p>
             </div>
         @endforelse
     </div>
