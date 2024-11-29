@@ -8,6 +8,7 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Placeholder;
 use Illuminate\Notifications\DatabaseNotification;
 use Filament\Notifications\Notification as FilamentNotification;
+use App\Models\Notification;
 
 
 class Notifications extends Page
@@ -46,6 +47,11 @@ class Notifications extends Page
     private function refreshNotifications(): void
     {
         $this->notifications = DatabaseNotification::latest()->get();
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return DatabaseNotification::whereNull('read_at')->count();
     }
 }
 
