@@ -20,7 +20,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
 use App\Filament\Pages\InstructorPorEstado; 
-
+use App\Filament\Pages\Notifications; 
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -37,13 +37,13 @@ class AdminPanelProvider extends PanelProvider
                 'secondary' => Color::hex('#00324D'),
                 'tertiary' => Color::hex('#3CB5CC'),
                
-            ])
-            ->databaseNotifications()
+            ])  
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
                 InstructorPorEstado::class,
+                Notifications::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([

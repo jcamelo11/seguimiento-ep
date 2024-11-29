@@ -229,16 +229,6 @@ class InformesSeguimientoRelationManager extends RelationManager
                         // Crear una notificación
                         $aprendiz->notify(new \App\Notifications\CorreccionInformeNotification($notificationData));
                         
-                        // Guardar la notificación en la tabla
-                        \DB::table('notifications')->insert([
-                            'id' => \Illuminate\Support\Str::uuid(),
-                            'type' => 'App\Notifications\CorreccionInformeNotification',
-                            'notifiable_type' => get_class($aprendiz),
-                            'notifiable_id' => $aprendiz->id,
-                            'data' => json_encode($notificationData),
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ]);
 
                         Notification::make()
                         ->title('Notificación Enviada')
