@@ -22,6 +22,7 @@ class InformesSeguimiento extends Model
         'fecha_entrega',
         'estado_informe',
         'observaciones',
+        'subido_drive',
     ];
 
     public function aprendiz()

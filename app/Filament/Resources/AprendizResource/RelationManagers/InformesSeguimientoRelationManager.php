@@ -23,12 +23,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 use Parallax\FilamentComments\Tables\Actions\CommentsAction;
-use Filament\Tables\Actions\Action; // Para definir acciones en tablas de Filament
-use Illuminate\Support\Facades\DB;  // Para verificar permisos con el Gate
-use Illuminate\Support\Str; // Para generar UUIDs
-use App\Notifications\CorreccionInformeNotification; // Para enviar notificaciones
-
-
+use Filament\Tables\Actions\Action; 
+use Illuminate\Support\Facades\DB;  
+use Illuminate\Support\Str; 
+use App\Notifications\CorreccionInformeNotification;
+use Filament\Tables\Columns\BooleanColumn;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Collection;
+use App\Notifications\InformeSubidoNotification;
 
 class InformesSeguimientoRelationManager extends RelationManager 
 {
@@ -51,6 +54,9 @@ class InformesSeguimientoRelationManager extends RelationManager
                     'RE - Errores' => 'RE - Errores',
                     'RE - Correcto' => 'RE - Correcto',
                 ]),
+                Toggle::make('subido_drive')
+                    ->label('¿Subido al Drive?')
+                    ->default(false),
                 MarkdownEditor::make('observaciones')->columnSpan('full'),
             ]);
     }
@@ -68,6 +74,8 @@ class InformesSeguimientoRelationManager extends RelationManager
                 TextColumn::make('fecha_entrega') 
                     ->label('Fecha de Entrega') 
                     ->formatStateUsing(fn ($state) => $state ? Carbon::parse($state)->format('d M Y') : 'N/A'),
+                Tables\Columns\BooleanColumn::make('subido_drive')
+                ->label('Subido en Drive'),
                 BadgeColumn::make('estado_informe') 
                     ->label('Estado')
                     ->colors([
@@ -246,6 +254,46 @@ class InformesSeguimientoRelationManager extends RelationManager
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    BulkAction::make('marcar_subidos')
+                        ->label('Marcar como Subidos')
+                        ->icon('heroicon-s-arrow-up-on-square-stack')
+                        ->color('success')
+                        ->action(function (Collection $records) {
+                            $instructor = auth()->user()->instructorSeguimiento; // Obtener el instructor
+                            $agrupadosPorAprendiz = $records->groupBy(fn($record) => $record->aprendiz->id ?? null);
+
+                            foreach ($agrupadosPorAprendiz as $aprendizId => $informes) {
+                                if ($aprendizId) {
+                                    $aprendiz = $informes->first()->aprendiz;
+                                    $updatedCount = $informes->count();
+                                    
+                                    if ($instructor) { // Verifica si el usuario actual es un instructor de seguimiento
+                                        // Enviar una notificación consolidada al aprendiz
+                                        $aprendiz->notify(new InformeSubidoNotification([
+                                            'instructor' => $instructor->nombre_completo ?? 'Instructor Desconocido',
+                                            'updatedCount' => $updatedCount,
+                                            'aprendiz' => $aprendiz->nombres . ' ' . $aprendiz->apellidos,
+                                        ]));
+                                    }
+
+                                    // Actualizar todos los informes relacionados como subidos
+                                    foreach ($informes as $record) {
+                                        $record->update(['subido_drive' => true]);
+                                    }
+                                }
+                            }
+
+                            // Notificación en la interfaz de Filament
+                            Notification::make()
+                                ->title('Actualización completada')
+                                ->body('Los informes seleccionados han sido marcados como subidos al Drive.')
+                                ->success()
+                                ->send();
+                        })
+                        ->requiresConfirmation()
+                        ->visible(fn () => Gate::allows('subido_drive_instructor::seguimiento')),
+
+                        
                 ]),
             ]);
     }

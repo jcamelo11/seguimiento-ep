@@ -173,7 +173,8 @@ class InstructorSeguimientoResource extends Resource implements HasShieldPermiss
             'delete',
             'delete_any',
             'filtrar_instructor',
-            'correcion_informe', // Permiso personalizado
+            'correcion_informe',
+            'subido_drive',
         ];
     }
 }
