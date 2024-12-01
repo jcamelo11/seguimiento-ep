@@ -355,20 +355,11 @@ class AprendizResource extends Resource implements HasShieldPermissions
                     ->label('Etapa Productiva')
                     ->sortable()
                     ->toggleable()
-                    ->colors([
-                        'warning' => 'CONTRATO DE APRENDIZAJE',
-                        'info' => function ($state) {
-                            return in_array($state, [
-                                'MONITORIAS',
-                                'PASANTIA', 
-                                'PASANTIA - APOYO A UNIDAD PRODUCTIVA FAMILIAR',
-                                'PASANTIA - APOYO INSTITUCION ESTATAL, MUNIC, VERED, ONG', 
-                                'PASANTIA - DE ASESORIA A PYMES', 
-                                'PROYECTO PRODUCTIVO', 
-                                'PROYECTO PRODUCTIVO - CREACION DE UNIDAD PRODUCTIVA', 
-                                'VINCULACION LABORAL'
-                            ]);
-                        }
+                    ->colors([ 
+                        'contrato' => 'CONTRATO DE APRENDIZAJE', 
+                        'info' => function ($state) { 
+                            return $state !== 'CONTRATO DE APRENDIZAJE'; 
+                        },
                     ]),
                 Tables\Columns\TextColumn::make('instructorSeguimiento.nombre_completo')
                 ->label('Instructor de Seguimiento')
