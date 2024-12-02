@@ -71,21 +71,12 @@ class EtapaProductivaRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\BadgeColumn::make('modalidad_etapa')
                 ->label('Modalidad')
-                    ->colors([
-                        'warning' => 'CONTRATO DE APRENDIZAJE',
-                        'info' => function ($state) {
-                            return in_array($state, [
-                                'MONITORIAS',
-                                'PASANTIA',
-                                'PASANTIA - APOYO A UNIDAD PRODUCTIVA FAMILIAR', 
-                                'PASANTIA - APOYO INSTITUCION ESTATAL, MUNIC, VERED, ONG', 
-                                'PASANTIA - DE ASESORIA A PYMES', 
-                                'PROYECTO PRODUCTIVO', 
-                                'PROYECTO PRODUCTIVO - CREACION DE UNIDAD PRODUCTIVA', 
-                                'VINCULACION LABORAL'
-                            ]);
-                        }
-                    ]),
+                ->colors([ 
+                    'contrato' => 'CONTRATO DE APRENDIZAJE', 
+                    'info' => function ($state) { 
+                        return $state !== 'CONTRATO DE APRENDIZAJE'; 
+                    },
+                ]),
                 Tables\Columns\TextColumn::make('fecha_inicio')
                     ->label('Fecha de Inicio')
                     ->formatStateUsing(fn ($state) => Carbon::parse($state)->format('d M Y')),
