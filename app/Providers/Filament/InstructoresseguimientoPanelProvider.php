@@ -25,11 +25,15 @@ class InstructoresseguimientoPanelProvider extends PanelProvider
     {
         return $panel
             ->id('instructoresseguimiento')
-            ->path('instructorseguimiento')
+            ->path('instructor-seguimiento')
             ->login()
             ->profile()
+            ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::hex('#3CB5CC'),
+                'warning' => Color::Orange,
+                'danger' => Color::Rose,
+                'contrato' => Color::hex('#FFD700'),
             ])
             ->discoverResources(in: app_path('Filament/Instructoresseguimiento/Resources'), for: 'App\\Filament\\Instructoresseguimiento\\Resources')
             ->discoverPages(in: app_path('Filament/Instructoresseguimiento/Pages'), for: 'App\\Filament\\Instructoresseguimiento\\Pages')

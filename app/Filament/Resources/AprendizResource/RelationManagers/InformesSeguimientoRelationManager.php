@@ -50,7 +50,7 @@ class InformesSeguimientoRelationManager extends RelationManager
                 Forms\Components\Select::make('estado_informe')
                 ->label('Estado Informe')
                 ->options([
-                    'Sin Revision' => 'Sin Revisión',
+                    'Sin Revisión' => 'Sin Revisión',
                     'RE - Errores' => 'RE - Errores',
                     'RE - Correcto' => 'RE - Correcto',
                 ]),
@@ -84,7 +84,7 @@ class InformesSeguimientoRelationManager extends RelationManager
                         'success' => 'RE - Correcto',
                     ])
                     ->icons([
-                        'heroicon-s-eye' => 'Sin Revisión',
+                        'heroicon-s-eye-slash' => 'Sin Revisión',
                         'heroicon-s-x-circle' => 'RE - Errores',
                         'heroicon-s-check-circle' => 'RE - Correcto',
                     ]),

@@ -24,9 +24,19 @@ return [
         'intercept_gate' => 'before', // after
     ],
 
-    'panel_user' => [
+    'instructor_seguimiento' => [
         'enabled' => true,
-        'name' => 'panel_user',
+        'name' => 'instructor_seguimiento',
+    ],
+
+    'apoyo' => [
+        'enabled' => true,
+        'name' => 'apoyo',
+    ],
+
+    'user' => [
+        'enabled' => true,
+        'name' => 'user',
     ],
 
     'permission_prefixes' => [

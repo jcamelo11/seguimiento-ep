@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rules\Password;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Hash;
+use Filament\Tables\Columns\BadgeColumn;
 
 
 class UserResource extends Resource
@@ -102,6 +103,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->sortable(),
+                BadgeColumn::make('roles.name')  
+                    ->label('Rol'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
