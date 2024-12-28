@@ -11,6 +11,7 @@ use App\Mail\AsignacionInstructorMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Notifications\Notifiable;
 use Filament\Notifications\Notification; 
+use Illuminate\Database\Eloquent\Builder;
 
 
 class Aprendiz extends Model

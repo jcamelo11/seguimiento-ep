@@ -34,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->profile()
             ->sidebarCollapsibleOnDesktop()
             ->colors([
-                'primary' => Color::hex('#39A900'),
+                'primary' => Color::hex('#39a900'),
                 'secondary' => Color::hex('#00324D'),
                 'tertiary' => Color::hex('#3CB5CC'),
                 'warning' => Color::Orange,
