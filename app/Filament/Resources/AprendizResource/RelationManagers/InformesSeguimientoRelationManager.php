@@ -219,7 +219,7 @@ class InformesSeguimientoRelationManager extends RelationManager
                     ->icon('heroicon-s-bell-alert')
                     ->visible(fn ($record) => $record->estado_informe === 'RE - Errores' && Gate::allows('correcion_informe_instructor::seguimiento'))
                     ->action(function ($record) {
-                        $instructor = auth()->user()->instructorSeguimiento; // Obtener el instructor actual
+                        $instructor = Auth::user()->instructorSeguimiento; // Obtener el instructor actual
                         $aprendiz = $record->aprendiz; // Relación con el aprendiz
                         $informe = $record; // Informe corregido
                         
@@ -259,7 +259,7 @@ class InformesSeguimientoRelationManager extends RelationManager
                         ->icon('heroicon-s-arrow-up-on-square-stack')
                         ->color('success')
                         ->action(function (Collection $records) {
-                            $instructor = auth()->user()->instructorSeguimiento; // Obtener el instructor
+                            $instructor = Auth::user()->instructorSeguimiento; // Obtener el instructor
                             $agrupadosPorAprendiz = $records->groupBy(fn($record) => $record->aprendiz->id ?? null);
 
                             foreach ($agrupadosPorAprendiz as $aprendizId => $informes) {
